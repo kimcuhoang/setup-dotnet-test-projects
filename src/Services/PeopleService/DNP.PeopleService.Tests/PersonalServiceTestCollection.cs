@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Testcontainers.MsSql;
 using Xunit;
 
@@ -21,6 +19,8 @@ public class PersonalServiceTestCollectionFixture : IAsyncLifetime
 
     public PeopleServiceWebApplicationFactory Factory { get; private set; } = default!;
 
+    private const string MsSqlPassword = "P@ssw0rd-01";
+
 
     public PersonalServiceTestCollectionFixture()
     {
@@ -32,17 +32,35 @@ public class PersonalServiceTestCollectionFixture : IAsyncLifetime
                 .WithHostname("test")
                 .WithPortBinding(1433, assignRandomHostPort: true)
                 .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
-                .WithPassword("P@ssw0rd-01")
+                .WithPassword(MsSqlPassword)
                 .WithStartupCallback(async (container, cancellationToken) =>
                 {
                     Debug.WriteLine($"{nameof(PersonalServiceTestCollectionFixture)} - after container started");
 
-                    var msSqlContainer = (MsSqlContainer)container;
-                    this.Factory = new PeopleServiceWebApplicationFactory(msSqlContainer.GetConnectionString());
+                    this.Factory = new PeopleServiceWebApplicationFactory(this.GetConnectionString(container));
                     
                     await Task.Yield();
                 })
                 .Build();
+    }
+
+    /// <summary>
+    /// Override the GetConnectionString from MsSqlBuilder
+    /// </summary>
+    /// <param name="container"></param>
+    /// <returns></returns>
+    private string GetConnectionString(MsSqlContainer container)
+    {
+        var properties = new Dictionary<string, string>
+        {
+            { "Server", container.Hostname + "," + container.GetMappedPublicPort(MsSqlBuilder.MsSqlPort) },
+            { "Database", MsSqlBuilder.DefaultDatabase },
+            { "User Id", MsSqlBuilder.DefaultUsername },
+            { "Password", MsSqlPassword },
+            { "Encrypt", bool.FalseString },
+            { "MultipleActiveResultSets", bool.TrueString }
+        };
+        return string.Join(";", properties.Select(property => string.Join("=", property.Key, property.Value)));
     }
 
     public async Task DisposeAsync()
@@ -56,19 +74,5 @@ public class PersonalServiceTestCollectionFixture : IAsyncLifetime
         Debug.WriteLine($"{nameof(PersonalServiceTestCollectionFixture)} {nameof(InitializeAsync)}");
 
         await this.Container.StartAsync();
-
-        await this.Factory.ExecuteServiceAsync(async serviceProvider =>
-        {
-            var dbContext = serviceProvider.GetRequiredService<DbContext>();
-
-            var database = dbContext.Database;
-
-            var pendingMigrations = await database.GetPendingMigrationsAsync();
-
-            if (pendingMigrations.Any())
-            {
-                await database.MigrateAsync();
-            }
-        });
     }
 }

@@ -36,17 +36,23 @@ public abstract class PeopleServiceTestBase: IAsyncLifetime
         {
             var dbContext = serviceProvider.GetRequiredService<DbContext>();
 
-            await using var transaction = await dbContext.Database.BeginTransactionAsync();
-            try
+            var strategy = dbContext.Database.CreateExecutionStrategy();
+
+            await strategy.ExecuteAsync(async () =>
             {
-                await func.Invoke(dbContext);
-                await transaction.CommitAsync();
-            }
-            catch (Exception)
-            {
-                await transaction.RollbackAsync();
-                throw;
-            }
+                // Achieving atomicity
+                await using var transaction = await dbContext.Database.BeginTransactionAsync();
+                try
+                {
+                    await func.Invoke(dbContext);
+                    await transaction.CommitAsync();
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            });
         });
     }
 

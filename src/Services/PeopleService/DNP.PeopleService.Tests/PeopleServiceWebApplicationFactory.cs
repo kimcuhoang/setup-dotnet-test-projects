@@ -10,6 +10,7 @@ using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
 using Xunit;
+using DNP.PeopleService.BackgroundServices;
 
 namespace DNP.PeopleService.Tests;
 
@@ -50,6 +51,8 @@ public class PeopleServiceWebApplicationFactory : WebApplicationFactory<Program>
             .ConfigureTestServices(services =>
             {
                 //TODO: override services for testing only
+
+                services.AddHostedService<DatabaseMigrationBackgroundService>();
             });
     }
 

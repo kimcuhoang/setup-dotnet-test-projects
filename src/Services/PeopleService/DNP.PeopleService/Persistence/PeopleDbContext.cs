@@ -4,14 +4,9 @@ using System.Reflection;
 
 namespace DNP.PeopleService.Persistence;
 
-public class PeopleDbContext: DbContext
+public class PeopleDbContext(DbContextOptions options) : DbContext(options)
 {
-    public PeopleDbContext(DbContextOptions options) : base(options)
-    {
-
-    }
-
-    public DbSet<Person> People => Set<Person>();
+    public DbSet<Person> People => this.Set<Person>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

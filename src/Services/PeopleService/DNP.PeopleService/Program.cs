@@ -1,4 +1,5 @@
 
+using DNP.PeopleService.BackgroundServices;
 using DNP.PeopleService.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,10 +17,12 @@ builder.Services.AddDbContext<DbContext, PeopleDbContext>(db =>
 {
     db.UseSqlServer(connectionString, options =>
     {
-        //options.EnableRetryOnFailure();
+        options.EnableRetryOnFailure();
         options.MigrationsAssembly(typeof(PeopleDbContext).Assembly.GetName().Name);
     });
 });
+
+builder.Services.AddHostedService<DatabaseMigrationBackgroundService>();
 
 var app = builder.Build();
 
