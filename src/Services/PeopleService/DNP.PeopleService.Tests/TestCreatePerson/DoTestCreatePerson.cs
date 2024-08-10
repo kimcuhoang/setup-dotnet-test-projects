@@ -9,23 +9,13 @@ namespace DNP.PeopleService.Tests.TestCreatePerson;
 public class DoTestCreatePerson(PersonalServiceTestCollectionFixture testCollectionFixture, ITestOutputHelper testOutput) 
     : PeopleServiceTestBase(testCollectionFixture, testOutput)
 {
-    protected readonly List<Guid> _personIds = new();
-
-    private void DeletePerson(Guid? personId = null)
-    {
-        if (personId == null) return;
-        this._personIds.Add(personId.Value);
-    }
-
     public override async Task DisposeAsync()
     {
         await base.DisposeAsync();
 
         await this.ExecuteTransactionDbContextAsync(async dbContext =>
         {
-            await dbContext.Set<Person>()
-                    .Where(_ => this._personIds.Contains(_.Id))
-                    .ExecuteDeleteAsync();
+            await dbContext.Set<Person>().ExecuteDeleteAsync();
         });
     }
 
@@ -41,8 +31,6 @@ public class DoTestCreatePerson(PersonalServiceTestCollectionFixture testCollect
         {
             dbContext.Add(person);
             await dbContext.SaveChangesAsync();
-
-            this.DeletePerson(person.Id);
         });
 
         await this.ExecuteDbContextAsync(async dbContext =>

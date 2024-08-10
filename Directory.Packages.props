@@ -13,7 +13,7 @@
     <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="7.0.5" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageVersion Include="Grpc.AspNetCore" Version="2.64.0" />
+    <PackageVersion Include="Grpc.AspNetCore" Version="2.65.0" />
     <PackageVersion Include="Testcontainers.MsSql" Version="3.9.0" />
   </ItemGroup>
   <ItemGroup>
