@@ -5,8 +5,8 @@ using Xunit;
 namespace DNP.PeopleService.Tests;
 
 
-[CollectionDefinition(nameof(PersonalServiceTestCollection))]
-public class PersonalServiceTestCollection : ICollectionFixture<PersonalServiceTestCollectionFixture>
+[CollectionDefinition(nameof(PeopleServiceTestCollection))]
+public class PeopleServiceTestCollection : ICollectionFixture<PersonalServiceTestCollectionFixture>
 {
 
 }

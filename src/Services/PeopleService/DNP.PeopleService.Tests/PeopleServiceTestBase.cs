@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace DNP.PeopleService.Tests;
 
-[Collection(nameof(PersonalServiceTestCollection))]
+[Collection(nameof(PeopleServiceTestCollection))]
 public abstract class PeopleServiceTestBase: IAsyncLifetime
 {
     protected readonly PeopleServiceWebApplicationFactory _factory;
