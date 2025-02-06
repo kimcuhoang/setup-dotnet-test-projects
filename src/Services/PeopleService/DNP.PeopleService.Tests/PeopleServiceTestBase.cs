@@ -4,6 +4,7 @@ using Bogus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace DNP.PeopleService.Tests;
 
@@ -70,6 +71,20 @@ public abstract class PeopleServiceTestBase: IAsyncLifetime
     {
         using var httpClient = this._factory.CreateClient();
         await func.Invoke(httpClient);
+    }
+
+    protected async Task<T?> ParseResponse<T>(HttpResponseMessage response, bool writeConsole = true)
+    {
+        var content = await response.Content.ReadAsStringAsync();
+        if (string.IsNullOrWhiteSpace(content)) return default(T);
+
+        if (writeConsole)
+        {
+            this._testOutput.WriteLine(content);
+        }
+        
+        var jsonSerializerOptions = this._factory.JsonSerializerSettings;
+        return JsonSerializer.Deserialize<T>(content, jsonSerializerOptions);
     }
 
     public virtual async Task InitializeAsync()

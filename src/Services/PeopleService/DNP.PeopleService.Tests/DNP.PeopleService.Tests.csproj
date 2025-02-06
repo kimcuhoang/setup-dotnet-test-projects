@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+	  <PackageReference Include="FakeItEasy" />
 	  <PackageReference Include="FluentAssertions" />
 	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
