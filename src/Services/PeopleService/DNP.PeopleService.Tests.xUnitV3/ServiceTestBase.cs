@@ -3,10 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DNP.PeopleService.Tests.xUnitV3;
 
-//[Collection(nameof(ServiceTestCollection))]
-
-
-
 public abstract class ServiceTestBase(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper) : IAsyncLifetime
 {
     protected readonly ServiceApplicationFactory Factory = testCollectionFixture.Factory;
