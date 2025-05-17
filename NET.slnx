@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/Services/" />
+  <Folder Name="/Services/People/">
+    <Project Path="src/Services/PeopleService/DNP.PeopleService.Tests/DNP.PeopleService.Tests.csproj" />
+    <Project Path="src/Services/PeopleService/DNP.PeopleService/DNP.PeopleService.csproj" />
+  </Folder>
+  <Folder Name="/__/">
+    <File Path=".gitignore" />
+    <File Path=".justfile" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+    <File Path="README.md" />
+  </Folder>
+</Solution>
