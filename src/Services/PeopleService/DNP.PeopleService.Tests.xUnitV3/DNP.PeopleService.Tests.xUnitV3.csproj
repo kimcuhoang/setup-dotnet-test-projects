@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<OutputType>Exe</OutputType>
+		<RootNamespace>DNP.PeopleService.Tests.xUnitV3</RootNamespace>
+		<TargetFramework>net9.0</TargetFramework>
+		<!-- To enable the Microsoft Testing Platform 'dotnet test' experience, add property: -->
+		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+
+		<!-- To enable the Microsoft Testing Platform native command line experience, add property: -->
+		<UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Content Include="xunit.runner.json" CopyToOutputDirectory="Always" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="Xunit" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="Testcontainers.XunitV3" />
+		<PackageReference Include="xunit.v3" />
+		<PackageReference Include="xunit.runner.visualstudio" />
+		<PackageReference Include="AutoBogus.Conventions" />
+		<PackageReference Include="Shouldly" />
+		<PackageReference Include="Testcontainers.MsSql" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\DNP.PeopleService\DNP.PeopleService.csproj" />
+	</ItemGroup>
+
+</Project>
