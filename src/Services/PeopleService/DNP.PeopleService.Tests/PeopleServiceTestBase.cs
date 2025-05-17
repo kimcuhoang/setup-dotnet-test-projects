@@ -1,5 +1,4 @@
-﻿using Xunit.Abstractions;
-using Xunit;
+﻿using Xunit;
 using Bogus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +13,7 @@ public abstract class PeopleServiceTestBase: IAsyncLifetime
     protected readonly PeopleServiceWebApplicationFactory _factory;
     protected readonly ITestOutputHelper _testOutput;
     protected readonly Faker _faker;
+    protected readonly CancellationToken CancellationToken = TestContext.Current.CancellationToken;
 
     protected PeopleServiceTestBase(PersonalServiceTestCollectionFixture testCollectionFixture, ITestOutputHelper testOutput)
     {
@@ -87,13 +87,13 @@ public abstract class PeopleServiceTestBase: IAsyncLifetime
         return JsonSerializer.Deserialize<T>(content, jsonSerializerOptions);
     }
 
-    public virtual async Task InitializeAsync()
+    public virtual async ValueTask InitializeAsync()
     {
         await Task.Yield();
         Debug.WriteLine($"{nameof(PeopleServiceTestBase)} {nameof(InitializeAsync)}");
     }
 
-    public virtual async Task DisposeAsync()
+    public virtual async ValueTask DisposeAsync()
     {
         await Task.Yield();
         Debug.WriteLine($"{nameof(PeopleServiceTestBase)} {nameof(DisposeAsync)}");

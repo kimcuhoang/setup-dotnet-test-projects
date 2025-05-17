@@ -1,15 +1,12 @@
 ﻿using Bogus;
 using Person = DNP.PeopleService.Domain.Person;
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace DNP.PeopleService.Tests.TestCreatePerson;
 public class DoTestCreatePerson(PersonalServiceTestCollectionFixture testCollectionFixture, ITestOutputHelper testOutput) 
     : PeopleServiceTestBase(testCollectionFixture, testOutput)
 {
-    public override async Task DisposeAsync()
+    public override async ValueTask DisposeAsync()
     {
         await base.DisposeAsync();
 
@@ -36,7 +33,7 @@ public class DoTestCreatePerson(PersonalServiceTestCollectionFixture testCollect
         await this.ExecuteDbContextAsync(async dbContext =>
         {
             person = await dbContext.Set<Person>().FirstOrDefaultAsync(p => p.Id == person.Id);
-            person.Should().NotBeNull();
+            person.ShouldNotBeNull();
         });
     }
 }

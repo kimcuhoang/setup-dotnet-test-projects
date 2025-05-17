@@ -1,11 +1,7 @@
 ﻿using DNP.PeopleService.Features.Products.Models;
-using FluentAssertions;
 using NPOI.XSSF.UserModel;
-using Shouldly;
 using System.Net;
 using System.Text;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace DNP.PeopleService.Tests.TestProducts;
 public class TestImportProducts(PersonalServiceTestCollectionFixture testCollectionFixture, ITestOutputHelper testOutput) : IntegrationTestBase(testCollectionFixture, testOutput)
@@ -40,7 +36,7 @@ public class TestImportProducts(PersonalServiceTestCollectionFixture testCollect
         // Step-03: Execute the POST request
         // ==================================
         var httpClient = this._factory.CreateClient();
-        var response = await httpClient.PostAsync("/products/import-csv", formData);
+        var response = await httpClient.PostAsync("/products/import-csv", formData, this.CancellationToken);
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var products = await this.ParseResponse<List<ImportProductModel>>(response);
@@ -90,8 +86,8 @@ public class TestImportProducts(PersonalServiceTestCollectionFixture testCollect
         // Step-03: Execute the POST request
         // ==================================
         var httpClient = this._factory.CreateClient();
-        var response = await httpClient.PostAsync("/products/import-excel", formData);
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var response = await httpClient.PostAsync("/products/import-excel", formData, this.CancellationToken);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var products = await this.ParseResponse<List<ImportProductModel>>(response);
         products.ShouldNotBeEmpty();

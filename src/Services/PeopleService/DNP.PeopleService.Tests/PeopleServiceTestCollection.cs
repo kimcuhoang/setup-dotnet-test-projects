@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Testcontainers.MsSql;
-using Xunit;
 
 namespace DNP.PeopleService.Tests;
 
@@ -25,13 +24,13 @@ public class PersonalServiceTestCollectionFixture : IAsyncLifetime
         Debug.WriteLine($"{nameof(PersonalServiceTestCollectionFixture)} constructor");
     }
 
-    public async Task DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
         await this.Container.DisposeAsync();
         Debug.WriteLine($"{nameof(PersonalServiceTestCollectionFixture)} {nameof(DisposeAsync)}");
     }
 
-    public async Task InitializeAsync()
+    public async ValueTask InitializeAsync()
     {
         Debug.WriteLine($"{nameof(PersonalServiceTestCollectionFixture)} {nameof(InitializeAsync)}");
 

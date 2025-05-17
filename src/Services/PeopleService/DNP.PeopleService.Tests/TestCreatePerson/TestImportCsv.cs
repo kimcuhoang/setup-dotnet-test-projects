@@ -1,9 +1,6 @@
-﻿using FluentAssertions;
-using NPOI.XSSF.UserModel;
+﻿using NPOI.XSSF.UserModel;
 using System.Net;
 using System.Text;
-using Xunit;
-using Xunit.Abstractions;
 using static DNP.PeopleService.Controllers.ImportController;
 
 namespace DNP.PeopleService.Tests.TestCreatePerson;
@@ -30,16 +27,17 @@ public class TestImportCsv(PersonalServiceTestCollectionFixture testCollectionFi
             formData.Add(new StreamContent(csvStream), name: "file", fileName: "abc.csv");
 
             var response = await httpClient.PostAsync("/import-csv", formData);
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
             var codes = await this.ParseResponse<List<PersonCode>>(response);
-            codes.Should().HaveCount(numberOfCodes);
+            codes.ShouldNotBeEmpty();
+            codes.Count.ShouldBe(numberOfCodes);
+
             codes!.ForEach(_ =>
             {
-                _.Should().NotBeNull();
-                _.Code.Should().NotBeNullOrWhiteSpace();
+                _.ShouldNotBeNull();
+                _.Code.ShouldNotBeNullOrEmpty();
             });
-
         });
     }
 
@@ -71,14 +69,16 @@ public class TestImportCsv(PersonalServiceTestCollectionFixture testCollectionFi
 
             var response = await httpClient.PostAsync("/import-excel", formData);
 
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
             var codes = await this.ParseResponse<List<PersonCode>>(response);
-            codes.Should().HaveCount(numberOfCodes);
+            codes.ShouldNotBeEmpty();
+            codes.Count.ShouldBe(numberOfCodes);
+
             codes!.ForEach(_ =>
             {
-                _.Should().NotBeNull();
-                _.Code.Should().NotBeNullOrWhiteSpace();
+                _.ShouldNotBeNull();
+                _.Code.ShouldNotBeNullOrEmpty();
             });
         });
     }

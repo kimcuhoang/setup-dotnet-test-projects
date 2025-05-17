@@ -32,3 +32,7 @@ build:
 test: build
 	clear
 	dotnet test src/Services/PeopleService/DNP.PeopleService.Tests/DNP.PeopleService.Tests.csproj --no-build --verbosity normal
+
+ms-test: build
+	clear
+	dotnet run --project src/Services/PeopleService/DNP.PeopleService.Tests/DNP.PeopleService.Tests.csproj --no-build --verbosity normal
