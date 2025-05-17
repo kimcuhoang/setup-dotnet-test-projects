@@ -6,28 +6,27 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
 using DNP.PeopleService.BackgroundServices;
 
-namespace DNP.PeopleService.Tests;
+namespace DNP.PeopleService.Tests.xUnitV3;
 
-public class PeopleServiceWebApplicationFactory : WebApplicationFactory<Program>
+public class ServiceApplicationFactory : WebApplicationFactory<Program>
 {
     private readonly string _connectionString = default!;
 
-    public PeopleServiceWebApplicationFactory(string connectionString)
+    public ServiceApplicationFactory(string connectionString)
     {
-        this._connectionString = connectionString;
-        Debug.WriteLine($"{nameof(PeopleServiceWebApplicationFactory)} constructor");
+        _connectionString = connectionString;
+        Debug.WriteLine($"{nameof(ServiceApplicationFactory)} constructor");
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         var settingsInMemory = new Dictionary<string, string?>
         {
-            ["ConnectionStrings:Default"] = this._connectionString
+            ["ConnectionStrings:Default"] = _connectionString
         };
 
         var configuration = new ConfigurationBuilder()
@@ -57,7 +56,7 @@ public class PeopleServiceWebApplicationFactory : WebApplicationFactory<Program>
 
     public async Task ExecuteServiceAsync(Func<IServiceProvider, Task> func)
     {
-        using var scope = this.Services.CreateAsyncScope();
+        using var scope = Services.CreateAsyncScope();
         await func.Invoke(scope.ServiceProvider);
     }
 
@@ -65,7 +64,7 @@ public class PeopleServiceWebApplicationFactory : WebApplicationFactory<Program>
     {
         get
         {
-            var jsonSettings = this.Services.GetRequiredService<IOptions<JsonOptions>>().Value;
+            var jsonSettings = Services.GetRequiredService<IOptions<JsonOptions>>().Value;
             return jsonSettings?.SerializerOptions ?? new JsonSerializerOptions();
         }
     }

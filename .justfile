@@ -31,8 +31,16 @@ build:
 
 test: build
 	clear
-	dotnet test src/Services/PeopleService/DNP.PeopleService.Tests/DNP.PeopleService.Tests.csproj --no-build --verbosity normal
+	dotnet test src/Services/PeopleService/DNP.PeopleService.Tests --no-build --verbosity normal
 
 ms-test: build
 	clear
-	dotnet run --project src/Services/PeopleService/DNP.PeopleService.Tests/DNP.PeopleService.Tests.csproj --no-build --verbosity normal
+	dotnet run --project src/Services/PeopleService/DNP.PeopleService.Tests --no-build --verbosity normal
+
+test-v1: build
+	clear
+	dotnet test src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3 --no-build --verbosity quiet
+
+ms-test-v1: build
+	clear
+	dotnet run --project src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3 --no-build --verbosity normal

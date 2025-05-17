@@ -26,3 +26,6 @@ An introduction how to setup and organize the test projects in .NET
 - [Integration Testing with xUnit](https://www.jimmybogard.com/integration-testing-with-xunit/)
 - [How to create Parameterized Tests with xUnit](https://davecallan.com/creating-parameterized-tests-xunit/)
 - [Using Testing.Platform with NET 9](https://dateo-software.de/blog/testing-platform)
+- [Microsoft Testing Platform support in xUnit.net v3](https://xunit.net/docs/getting-started/v3/microsoft-testing-platform)
+- [How to use Testcontainers with .NET Unit Tests](https://blog.jetbrains.com/dotnet/2023/10/24/how-to-use-testcontainers-with-dotnet-unit-tests/)
+- [Testing with xUnit.net](https://dotnet.testcontainers.org/test_frameworks/xunit_net/)

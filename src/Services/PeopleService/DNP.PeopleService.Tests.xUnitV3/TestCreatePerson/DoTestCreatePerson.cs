@@ -1,16 +1,15 @@
-﻿using Bogus;
-using Person = DNP.PeopleService.Domain.Person;
-using Microsoft.EntityFrameworkCore;
+﻿using Person = DNP.PeopleService.Domain.Person;
 
-namespace DNP.PeopleService.Tests.TestCreatePerson;
-public class DoTestCreatePerson(PersonalServiceTestCollectionFixture testCollectionFixture, ITestOutputHelper testOutput) 
-    : PeopleServiceTestBase(testCollectionFixture, testOutput)
+
+namespace DNP.PeopleService.Tests.xUnitV3.TestCreatePerson;
+public class DoTestCreatePerson(ServiceTestCollectionFixture testCollectionFixture, ITestOutputHelper testOutputHelper)
+        : ServiceTestBase(testCollectionFixture, testOutputHelper)
 {
     public override async ValueTask DisposeAsync()
     {
         await base.DisposeAsync();
 
-        await this.ExecuteTransactionDbContextAsync(async dbContext =>
+        await ExecuteTransactionDbContextAsync(async dbContext =>
         {
             await dbContext.Set<Person>().ExecuteDeleteAsync();
         });
@@ -24,13 +23,13 @@ public class DoTestCreatePerson(PersonalServiceTestCollectionFixture testCollect
                 .RuleFor(_ => _.Name, _ => _.Person.FullName)
                 .Generate();
 
-        await this.ExecuteTransactionDbContextAsync(async dbContext =>
+        await ExecuteTransactionDbContextAsync(async dbContext =>
         {
             dbContext.Add(person);
             await dbContext.SaveChangesAsync();
         });
 
-        await this.ExecuteDbContextAsync(async dbContext =>
+        await ExecuteDbContextAsync(async dbContext =>
         {
             person = await dbContext.Set<Person>().FirstOrDefaultAsync(p => p.Id == person.Id);
             person.ShouldNotBeNull();
