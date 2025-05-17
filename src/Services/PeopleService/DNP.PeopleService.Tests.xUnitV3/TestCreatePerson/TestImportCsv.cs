@@ -3,7 +3,7 @@ using System.Text;
 using static DNP.PeopleService.Controllers.ImportController;
 
 namespace DNP.PeopleService.Tests.xUnitV3.TestCreatePerson;
-public class TestImportCsv(ServiceTestCollectionFixture testCollectionFixture, ITestOutputHelper testOutputHelper) 
+public class TestImportCsv(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper) 
     : ServiceTestBase(testCollectionFixture, testOutputHelper)
 {
     [Fact]

@@ -27,6 +27,7 @@ revert-migration name:
 
 build:
 	clear
+	dotnet clean
 	dotnet build NET.slnx
 
 test: build
