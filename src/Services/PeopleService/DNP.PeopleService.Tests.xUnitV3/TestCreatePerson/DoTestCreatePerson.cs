@@ -16,6 +16,16 @@ public class DoTestCreatePerson(ServiceTestAssemblyFixture testCollectionFixture
     }
 
     [Fact]
+    public async Task TestPreSeeding()
+    {
+        await ExecuteDbContextAsync(async dbContext =>
+        {
+            var person = await dbContext.Set<Person>().FirstOrDefaultAsync();
+            person.ShouldNotBeNull();
+        });
+    }
+
+    [Fact]
     public async Task CreatePersonSuccessfully()
     {
         var person = new Faker<Person>()

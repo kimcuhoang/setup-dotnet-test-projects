@@ -1,8 +1,8 @@
 <Solution>
   <Folder Name="/Services/" />
   <Folder Name="/Services/People/">
-    <Project Path="D:/.sources/github/setup-dotnet-test-projects/xunit-v3/src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3/DNP.PeopleService.Tests.xUnitV3.csproj" Id="170ef506-6f8c-4d03-8c64-72f4d4322c4c" />
-    <Project Path="D:/.sources/github/setup-dotnet-test-projects/xunit-v3/src/Services/PeopleService/DNP.PeopleService/DNP.PeopleService.csproj" />
+    <Project Path="./src/Services/PeopleService/DNP.PeopleService/DNP.PeopleService.csproj" />
+    <Project Path="./src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3/DNP.PeopleService.Tests.xUnitV3.csproj" />
   </Folder>
   <Folder Name="/__/">
     <File Path=".gitignore" />

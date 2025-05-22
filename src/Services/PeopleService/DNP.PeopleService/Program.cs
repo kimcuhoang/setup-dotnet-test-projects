@@ -1,5 +1,6 @@
 
 using DNP.PeopleService.BackgroundServices;
+using DNP.PeopleService.Domain;
 using DNP.PeopleService.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Encodings.Web;
@@ -26,12 +27,23 @@ builder.Services
 
 var configuration = builder.Configuration;
 var connectionString = configuration.GetConnectionString("default");
-builder.Services.AddDbContext<DbContext, PeopleDbContext>(db =>
+builder.Services.AddDbContextPool<DbContext, PeopleDbContext>(db =>
 {
     db.UseSqlServer(connectionString, options =>
     {
         options.EnableRetryOnFailure();
         options.MigrationsAssembly(typeof(PeopleDbContext).Assembly.GetName().Name);
+    });
+
+    db.UseAsyncSeeding(async (dbContext, _, cancellationToken) =>
+    {
+        var peopleDbContext = (PeopleDbContext)dbContext;
+        peopleDbContext.Add(new Person
+        {
+            Id = Guid.NewGuid(),
+            Name = "John Doe"
+        });
+        await peopleDbContext.SaveChangesAsync(cancellationToken);
     });
 });
 
