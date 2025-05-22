@@ -9,16 +9,18 @@ public class DoTestCreatePerson(ServiceTestAssemblyFixture testCollectionFixture
     {
         await base.DisposeAsync();
 
-        await ExecuteTransactionDbContextAsync(async dbContext =>
+        await this.ExecuteTransactionDbContextAsync(async dbContext =>
         {
-            await dbContext.Set<Person>().ExecuteDeleteAsync();
+            await dbContext.Set<Person>()
+                    .Where(_ => _.Id != Person.Default.Id)
+                    .ExecuteDeleteAsync();
         });
     }
 
     [Fact]
     public async Task TestPreSeeding()
     {
-        await ExecuteDbContextAsync(async dbContext =>
+        await this.ExecuteDbContextAsync(async dbContext =>
         {
             var person = await dbContext.Set<Person>().FirstOrDefaultAsync();
             person.ShouldNotBeNull();
@@ -33,13 +35,13 @@ public class DoTestCreatePerson(ServiceTestAssemblyFixture testCollectionFixture
                 .RuleFor(_ => _.Name, _ => _.Person.FullName)
                 .Generate();
 
-        await ExecuteTransactionDbContextAsync(async dbContext =>
+        await this.ExecuteTransactionDbContextAsync(async dbContext =>
         {
             dbContext.Add(person);
             await dbContext.SaveChangesAsync();
         });
 
-        await ExecuteDbContextAsync(async dbContext =>
+        await this.ExecuteDbContextAsync(async dbContext =>
         {
             person = await dbContext.Set<Person>().FirstOrDefaultAsync(p => p.Id == person.Id);
             person.ShouldNotBeNull();

@@ -1,6 +1,10 @@
 ﻿# use PowerShell instead of sh:
 set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
 
+default:
+	clear
+	just --list
+
 net-tools command:
 	clear
 	dotnet tool {{command}} --global dotnet-outdated-tool
@@ -23,6 +27,17 @@ revert-migration name:
 	dotnet ef database update {{name}} \
 	-p src/Services/PeopleService/DNP.PeopleService -s src/Services/PeopleService/DNP.PeopleService \
 	-c PeopleDbContext
+
+migration-bundle:
+	clear
+	dotnet ef migrations bundle \
+	-p src/Services/PeopleService/DNP.PeopleService -s src/Services/PeopleService/DNP.PeopleService \
+	-c PeopleDbContext \
+	-o deploy/efbundle.exe --force
+
+migration-run:
+	clear
+	deploy/efbundle.exe --verbose --connection "Data Source=localhost,1433;Initial Catalog=people-service;User ID=sa;Password=P@ssword;TrustServerCertificate=true;"
 
 
 build:

@@ -18,7 +18,7 @@ public class ServiceApplicationFactory : WebApplicationFactory<Program>
 
     public ServiceApplicationFactory(string connectionString)
     {
-        _connectionString = connectionString;
+        this._connectionString = connectionString;
         Debug.WriteLine($"{nameof(ServiceApplicationFactory)} constructor");
     }
 
@@ -26,7 +26,8 @@ public class ServiceApplicationFactory : WebApplicationFactory<Program>
     {
         var settingsInMemory = new Dictionary<string, string?>
         {
-            ["ConnectionStrings:Default"] = _connectionString
+            ["ConnectionStrings:Default"] = this._connectionString,
+            ["Logging:LogLevel:Microsoft.EntityFrameworkCore.Database.Command"] = "Information"
         };
 
         var configuration = new ConfigurationBuilder()
@@ -56,7 +57,7 @@ public class ServiceApplicationFactory : WebApplicationFactory<Program>
 
     public async Task ExecuteServiceAsync(Func<IServiceProvider, Task> func)
     {
-        using var scope = Services.CreateAsyncScope();
+        using var scope = this.Services.CreateAsyncScope();
         await func.Invoke(scope.ServiceProvider);
     }
 

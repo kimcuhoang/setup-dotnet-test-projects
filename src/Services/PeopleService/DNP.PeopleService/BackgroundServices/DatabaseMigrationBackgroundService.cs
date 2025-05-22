@@ -10,12 +10,12 @@ public class DatabaseMigrationBackgroundService(ILogger<DatabaseMigrationBackgro
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        using var scope = _scopeFactory.CreateAsyncScope();
+        using var scope = this._scopeFactory.CreateAsyncScope();
         var serviceProvider = scope.ServiceProvider;
         var dbContext = serviceProvider.GetRequiredService<DbContext>();
 
         var database = dbContext.Database;
-        var pendingChanges = await database.GetPendingMigrationsAsync();
+        var pendingChanges = await database.GetPendingMigrationsAsync(cancellationToken);
 
         if (!pendingChanges.Any())
         {
@@ -23,7 +23,7 @@ public class DatabaseMigrationBackgroundService(ILogger<DatabaseMigrationBackgro
             return;
         }
 
-        await database.MigrateAsync();
+        await database.MigrateAsync(cancellationToken);
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)
