@@ -32,8 +32,3 @@ jobs:
 
     - name: Test by Testing.Platform .NET 9 & xUnit.v3 for MsSQL
       run: dotnet run --no-build --verbosity quiet --project src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3
-
-    - uses: taiki-e/install-action@just
-
-    - name: Run Justfile
-      run: just --justfile .justfile ms-test

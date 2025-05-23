@@ -47,9 +47,8 @@
     ```bash
     just test
     ```
-### Github Action
-- Use `just` to execute integration tests
 
+---
 ## Give a Star! :star2:
 
 If you liked this project or if it helped you, please give a star :star2: for this repository. Thank you!!!
