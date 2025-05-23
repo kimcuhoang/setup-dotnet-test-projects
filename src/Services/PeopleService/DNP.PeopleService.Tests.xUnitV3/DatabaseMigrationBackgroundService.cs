@@ -1,7 +1,8 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
-namespace DNP.PeopleService.BackgroundServices;
+namespace DNP.PeopleService.Tests.xUnitV3;
 
 public class DatabaseMigrationBackgroundService(ILogger<DatabaseMigrationBackgroundService> logger, IServiceScopeFactory scopeFactory) : IHostedService
 {
@@ -15,15 +16,15 @@ public class DatabaseMigrationBackgroundService(ILogger<DatabaseMigrationBackgro
         var dbContext = serviceProvider.GetRequiredService<DbContext>();
 
         var database = dbContext.Database;
-        var pendingChanges = await database.GetPendingMigrationsAsync();
+        var pendingChanges = await database.GetPendingMigrationsAsync(cancellationToken);
 
         if (!pendingChanges.Any())
         {
-            this._logger.LogWarning("Nothing new. Database is up to date !!!!");
+            _logger.LogWarning("Nothing new. Database is up to date !!!!");
             return;
         }
 
-        await database.MigrateAsync();
+        await database.MigrateAsync(cancellationToken);
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)

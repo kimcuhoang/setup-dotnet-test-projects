@@ -1,38 +1,54 @@
-# How to setup an integration test project with xUnit and TestContainers in .NET
-
-This project demonstrates how to set up an integration test project using xUnit and TestContainers in .NET. The highlights of this project are:
-- xUnit V3 and Microsoft Testing Platform support
-- TestContainers with xUnit V3
-- MSSQL TestContainer
-- Only one instance of 
+# Playing with .NET
 
 ## Features
 
-- By using `WebApplicationFactory`, we can create a test server that runs the application in memory, which allows us to test the application without having to deploy it to a real server.
-- By using `TestContainers`, we can create a test database that runs in a Docker container, which allows us to test the application with a real database without having to install and configure a database server on the local machine.
-- By using `AssemblyFixture`, we can ensure that the database and application are created only once for all tests, which improves performance and reduces resource usage.
-- By using `IAsyncLifetime`, we can ensure that the test database is created and destroyed automatically, which simplifies the test setup and teardown process.
-- By using `IConfiguration`, we can easily configure the test database connection string and other settings, which allows us to customize the test environment without having to modify the application code.
+### Using [justfile](/.justfile) as a command runner
+- [just](https://github.com/casey/just)
+- [Justfile Cheat Sheet](https://cheatography.com/linux-china/cheat-sheets/justfile/)
+- Installation
+    - **Linux**: `curl -sSL instl.sh/casey/just/linux | bash`
+    - **Windows**: `winget install --id Casey.Just --exact`
 
+### Configure `dotnet-tool` in local
+- Install dotnet's tools, i.e. `dotnet-ef` in local
+    ```bash
+    just dotnet-tools
+    ```
+    
+### Configure **Kestrel**
+- Via `appsettings.json`
+- Then load via `Program.cs`
+    ```csharp
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        options.AddServerHeader = false;
+        options.Configure(builder.Configuration.GetSection("Kestrel"));
+    });
+    ```
+### EntityFrameworkCore
+- Use [bundle migration](https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/applying?tabs=dotnet-core-cli#bundles)
+- And [Data Seeding](https://learn.microsoft.com/en-us/ef/core/modeling/data-seeding)
 
-## First
+### Setup an integration test project
+- Using [xUnitV3](https://xunit.net/docs/getting-started/v3/whats-new)
+- Using [Testcontainers.XunitV3](https://dotnet.testcontainers.org/test_frameworks/xunit_net/)
+- Using [Testcontainers.MsSql](https://dotnet.testcontainers.org/modules/mssql/)
+- Using [Microsoft Testing Platform support in xUnit.net v3](https://xunit.net/docs/getting-started/v3/microsoft-testing-platform)
+- Highlighted:
+    - `AssemblyFixture` as a [Shared Context between Tests](https://xunit.net/docs/shared-context) in which the database and application are created only once for all tests, which improves performance and reduces resource usage.
+    - [Memory Configuration Provider](https://learn.microsoft.com/en-us/dotnet/core/extensions/configuration-providers#memory-configuration-provider) to dynamically change the settings for integration tests without modifying existing code
+    - By using `WebApplicationFactory`, we can create a test server that runs the application in memory, which allows us to test the application without having to deploy it to a real server.
 
-1. Define `ServiceApplicationFactory` which is a custom of `WebApplicationFactory`
-2. Define `ServiceTestAssemblyFixture` which is an derived class of `ContainerFixture` from `TestContainers.xUnitV3`
-3. Define `ServiceTestBase` the base class of every test and implement `IAsyncLifetime`
+- Run tests via `just`
+    ```bash
+    just ms-test
+    ```
+    Or
+    ```bash
+    just test
+    ```
 
-## Then implement tests
+---
+## Give a Star! :star2:
 
-1. Define your test class (i.e. `DoTestCreatePerson`) which must inherit from `PeopleServiceTestBase`
-
-
-## Resources
-
-- [Shared Context between Tests](https://xunit.net/docs/shared-context)
-- [Integration Testing with xUnit](https://www.jimmybogard.com/integration-testing-with-xunit/)
-- [How to create Parameterized Tests with xUnit](https://davecallan.com/creating-parameterized-tests-xunit/)
-- [Using Testing.Platform with NET 9](https://dateo-software.de/blog/testing-platform)
-- [Microsoft Testing Platform support in xUnit.net v3](https://xunit.net/docs/getting-started/v3/microsoft-testing-platform)
-- [How to use Testcontainers with .NET Unit Tests](https://blog.jetbrains.com/dotnet/2023/10/24/how-to-use-testcontainers-with-dotnet-unit-tests/)
-- [Testing with xUnit.net](https://dotnet.testcontainers.org/test_frameworks/xunit_net/)
-- [Memory Configuration Provider](https://learn.microsoft.com/en-us/dotnet/core/extensions/configuration-providers#memory-configuration-provider)
+If you liked this project or if it helped you, please give a star :star2: for this repository. Thank you!!!

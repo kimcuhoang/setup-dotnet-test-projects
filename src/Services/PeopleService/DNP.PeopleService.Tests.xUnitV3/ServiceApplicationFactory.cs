@@ -8,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
-using DNP.PeopleService.BackgroundServices;
 
 namespace DNP.PeopleService.Tests.xUnitV3;
 
@@ -18,7 +17,7 @@ public class ServiceApplicationFactory : WebApplicationFactory<Program>
 
     public ServiceApplicationFactory(string connectionString)
     {
-        _connectionString = connectionString;
+        this._connectionString = connectionString;
         Debug.WriteLine($"{nameof(ServiceApplicationFactory)} constructor");
     }
 
@@ -26,7 +25,8 @@ public class ServiceApplicationFactory : WebApplicationFactory<Program>
     {
         var settingsInMemory = new Dictionary<string, string?>
         {
-            ["ConnectionStrings:Default"] = _connectionString
+            ["ConnectionStrings:Default"] = this._connectionString,
+            ["Logging:LogLevel:Microsoft.EntityFrameworkCore.Database.Command"] = "Information"
         };
 
         var configuration = new ConfigurationBuilder()
@@ -56,7 +56,7 @@ public class ServiceApplicationFactory : WebApplicationFactory<Program>
 
     public async Task ExecuteServiceAsync(Func<IServiceProvider, Task> func)
     {
-        using var scope = Services.CreateAsyncScope();
+        using var scope = this.Services.CreateAsyncScope();
         await func.Invoke(scope.ServiceProvider);
     }
 
@@ -64,7 +64,7 @@ public class ServiceApplicationFactory : WebApplicationFactory<Program>
     {
         get
         {
-            var jsonSettings = Services.GetRequiredService<IOptions<JsonOptions>>().Value;
+            var jsonSettings = this.Services.GetRequiredService<IOptions<JsonOptions>>().Value;
             return jsonSettings?.SerializerOptions ?? new JsonSerializerOptions();
         }
     }

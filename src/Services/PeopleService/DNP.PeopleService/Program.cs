@@ -1,17 +1,11 @@
-
-using DNP.PeopleService.BackgroundServices;
 using DNP.PeopleService.Persistence;
-using Microsoft.EntityFrameworkCore;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Additional configuration is required to successfully run gRPC on macOS.
-// For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
+builder.AddPersistence();
 
-// Add services to the container.
-builder.Services.AddGrpc();
 builder.Services
     .AddEndpointsApiExplorer()
     .AddControllers()
@@ -20,22 +14,14 @@ builder.Services
         json.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
         json.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
         json.JsonSerializerOptions.AllowTrailingCommas = true;
-        //json.JsonSerializerOptions.Converters.Add(new DateTimeJsonConverter());
-        //json.JsonSerializerOptions.Converters.Add(new NullableDateTimeJsonConverter());
     });
 
-var configuration = builder.Configuration;
-var connectionString = configuration.GetConnectionString("default");
-builder.Services.AddDbContext<DbContext, PeopleDbContext>(db =>
+builder.Services.AddGrpc();
+builder.WebHost.ConfigureKestrel(options =>
 {
-    db.UseSqlServer(connectionString, options =>
-    {
-        options.EnableRetryOnFailure();
-        options.MigrationsAssembly(typeof(PeopleDbContext).Assembly.GetName().Name);
-    });
+    options.AddServerHeader = false;
+    options.Configure(builder.Configuration.GetSection("Kestrel"));
 });
-
-builder.Services.AddHostedService<DatabaseMigrationBackgroundService>();
 
 var app = builder.Build();
 

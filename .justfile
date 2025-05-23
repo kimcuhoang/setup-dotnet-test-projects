@@ -1,10 +1,15 @@
 ﻿# use PowerShell instead of sh:
 set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
 
-net-tools command:
+default:
 	clear
-	dotnet tool {{command}} --global dotnet-outdated-tool
-	dotnet tool {{command}} --global dotnet-ef
+	just --list
+
+dotnet-tools command:
+	clear
+	dotnet new tool-manifest --force
+	dotnet tool {{command}} --local dotnet-outdated-tool
+	dotnet tool {{command}} --local dotnet-ef
 
 add-migration name:
 	clear
@@ -24,6 +29,17 @@ revert-migration name:
 	-p src/Services/PeopleService/DNP.PeopleService -s src/Services/PeopleService/DNP.PeopleService \
 	-c PeopleDbContext
 
+migration-bundle:
+	clear
+	dotnet ef migrations bundle \
+	-p src/Services/PeopleService/DNP.PeopleService -s src/Services/PeopleService/DNP.PeopleService \
+	-c PeopleDbContext \
+	-o deploy/efbundle.exe --force
+
+migration-run:
+	clear
+	deploy/efbundle.exe --verbose --connection "Data Source=localhost,1433;Initial Catalog=People-Service;User ID=sa;Password=P@ssword;TrustServerCertificate=true;"
+
 
 build:
 	clear
@@ -32,16 +48,13 @@ build:
 
 test: build
 	clear
-	dotnet test src/Services/PeopleService/DNP.PeopleService.Tests --no-build --verbosity normal
+	dotnet test src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3 --no-build --verbosity normal
 
 ms-test: build
 	clear
-	dotnet run --project src/Services/PeopleService/DNP.PeopleService.Tests --no-build --verbosity normal
+	dotnet run --project src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3 --no-build --no-restore --verbosity normal
 
-test-v1: build
+start: migration-bundle migration-run build
 	clear
-	dotnet test src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3 --no-build --verbosity quiet
-
-ms-test-v1: build
-	clear
-	dotnet run --project src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3 --no-build --verbosity normal
+	dotnet watch --project src/Services/PeopleService/DNP.PeopleService \
+		--no-build --no-launch-profile --no-restore --verbosity normal 
