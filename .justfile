@@ -57,4 +57,4 @@ ms-test: build
 start: migration-bundle migration-run build
 	clear
 	dotnet watch --project src/Services/PeopleService/DNP.PeopleService \
-		--no-build --no-launch-profile --nologo --no-restore --verbosity normal 
+		--no-build --no-launch-profile --no-restore --verbosity normal 
