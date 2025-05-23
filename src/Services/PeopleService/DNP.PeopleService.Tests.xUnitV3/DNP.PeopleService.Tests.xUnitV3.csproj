@@ -5,7 +5,6 @@
 		<Nullable>enable</Nullable>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>DNP.PeopleService.Tests.xUnitV3</RootNamespace>
-		<TargetFramework>net9.0</TargetFramework>
 		<!-- To enable the Microsoft Testing Platform 'dotnet test' experience, add property: -->
 		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
 

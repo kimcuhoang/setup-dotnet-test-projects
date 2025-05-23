@@ -32,3 +32,10 @@ jobs:
 
     - name: Test by Testing.Platform .NET 9 & xUnit.v3 for MsSQL
       run: dotnet run --no-build --verbosity quiet --project src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3
+
+    - uses: extractions/setup-just@v2
+      with:
+        just-version: 1.5.0  # optional semver specification, otherwise latest
+
+    - name: Run Justfile
+      run: just --justfile .justfile ms-test

@@ -8,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
-using DNP.PeopleService.BackgroundServices;
 
 namespace DNP.PeopleService.Tests.xUnitV3;
 
@@ -65,7 +64,7 @@ public class ServiceApplicationFactory : WebApplicationFactory<Program>
     {
         get
         {
-            var jsonSettings = Services.GetRequiredService<IOptions<JsonOptions>>().Value;
+            var jsonSettings = this.Services.GetRequiredService<IOptions<JsonOptions>>().Value;
             return jsonSettings?.SerializerOptions ?? new JsonSerializerOptions();
         }
     }

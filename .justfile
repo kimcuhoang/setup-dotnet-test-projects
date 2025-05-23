@@ -5,10 +5,11 @@ default:
 	clear
 	just --list
 
-net-tools command:
+dotnet-tools command:
 	clear
-	dotnet tool {{command}} --global dotnet-outdated-tool
-	dotnet tool {{command}} --global dotnet-ef
+	dotnet new tool-manifest --force
+	dotnet tool {{command}} --local dotnet-outdated-tool
+	dotnet tool {{command}} --local dotnet-ef
 
 add-migration name:
 	clear
@@ -37,7 +38,7 @@ migration-bundle:
 
 migration-run:
 	clear
-	deploy/efbundle.exe --verbose --connection "Data Source=localhost,1433;Initial Catalog=people-service;User ID=sa;Password=P@ssword;TrustServerCertificate=true;"
+	deploy/efbundle.exe --verbose --connection "Data Source=localhost,1433;Initial Catalog=People-Service;User ID=sa;Password=P@ssword;TrustServerCertificate=true;"
 
 
 build:
@@ -47,8 +48,13 @@ build:
 
 test: build
 	clear
-	dotnet test src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3 --no-build --verbosity quiet
+	dotnet test src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3 --no-build --verbosity normal
 
 ms-test: build
 	clear
-	dotnet run --project src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3 --no-build --verbosity normal
+	dotnet run --project src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3 --no-build --no-restore --verbosity normal
+
+start: migration-bundle migration-run build
+	clear
+	dotnet watch --project src/Services/PeopleService/DNP.PeopleService \
+		--no-build --no-launch-profile --nologo --no-restore --verbosity normal 
