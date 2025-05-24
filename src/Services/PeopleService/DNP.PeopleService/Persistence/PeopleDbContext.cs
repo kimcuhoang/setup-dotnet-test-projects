@@ -1,4 +1,4 @@
-﻿using DNP.PeopleService.Domain;
+﻿using DNP.PeopleService.Features.People.Domain;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 

@@ -1,10 +1,15 @@
+using DNP.PeopleService.Features.People;
 using DNP.PeopleService.Persistence;
+using DNP.PeopleService.StartupTasks;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddPersistence();
+builder
+    .AddPersistence()
+    .AddPeopleFeature()
+    .AddStartupTasks();
 
 builder.Services
     .AddEndpointsApiExplorer()

@@ -1,4 +1,4 @@
-﻿using Person = DNP.PeopleService.Domain.Person;
+﻿using Person = DNP.PeopleService.Features.People.Domain.Person;
 
 
 namespace DNP.PeopleService.Tests.xUnitV3.TestCreatePerson;
