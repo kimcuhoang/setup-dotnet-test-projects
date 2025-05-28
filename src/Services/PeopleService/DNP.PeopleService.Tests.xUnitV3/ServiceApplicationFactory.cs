@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-//using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
 
 namespace DNP.PeopleService.Tests.xUnitV3;
@@ -20,23 +20,6 @@ public class ServiceApplicationFactory : WebApplicationFactory<Program>
     }
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        //var settingsInMemory = new Dictionary<string, string?>
-        //{
-        //    ["ConnectionStrings:Default"] = this._connectionString,
-        //    ["Logging:LogLevel:Microsoft.EntityFrameworkCore.Database.Command"] = "Information"
-        //};
-
-        //var configuration = new ConfigurationBuilder()
-        //        .AddInMemoryCollection(settingsInMemory)
-        //        .Build();
-
-        //builder
-        //    .UseConfiguration(configuration)
-        //    .ConfigureAppConfiguration(cfg =>
-        //    {
-        //        cfg.AddInMemoryCollection(settingsInMemory);
-        //    });
-
         builder.UseEnvironment("Integration-Test");
 
         builder
@@ -44,18 +27,15 @@ public class ServiceApplicationFactory : WebApplicationFactory<Program>
             .UseSetting("Logging:LogLevel:Microsoft.EntityFrameworkCore.Database.Command", "Information")
             .UseSetting("Logging:LogLevel:Microsoft.EntityFrameworkCore.Database.Command", "Warning");
 
-        //builder
-        //    .ConfigureServices(services =>
-        //    {
-        //        services.RemoveAll<IHostedService>();
-        //    })
-        //    .ConfigureTestServices(services =>
-        //    {
-        //        services
-        //            .AddTransient<IStartupTask, DatabaseMigrationTask>()
-        //            .AddTransient<IStartupTask, DataSeedingTask>()
-        //            .AddHostedService<StartupTasksRunner>();
-        //    });
+        builder
+            .ConfigureServices(services =>
+            {
+                services.RemoveAll<IHostedService>();
+            })
+            .ConfigureTestServices(services =>
+            {
+                services.AddHostedService<StartupTestRunner>();
+            });
     }
 
     public async Task ExecuteServiceAsync(Func<IServiceProvider, Task> func)

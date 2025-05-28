@@ -1,6 +1,5 @@
 using DNP.PeopleService.Features.People;
 using DNP.PeopleService.Persistence;
-using DNP.PeopleService.StartupTasks;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 
@@ -8,8 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder
     .AddPersistence()
-    .AddPeopleFeature()
-    .AddStartupTasks();
+    .AddPeopleFeature();
 
 builder.Services
     .AddEndpointsApiExplorer()

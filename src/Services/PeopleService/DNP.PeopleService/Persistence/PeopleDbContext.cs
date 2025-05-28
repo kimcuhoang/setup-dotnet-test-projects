@@ -12,4 +12,13 @@ public class PeopleDbContext(DbContextOptions options) : DbContext(options)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
+
+    public void SeedingData()
+    {
+        if (!this.People.Any(p => p.Id == Person.Default.Id))
+        {
+            this.People.Add(Person.Default);
+            this.SaveChanges();
+        }
+    }
 }
