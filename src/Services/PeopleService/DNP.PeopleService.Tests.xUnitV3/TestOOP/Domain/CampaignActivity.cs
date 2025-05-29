@@ -10,7 +10,7 @@ internal abstract class CampaignActivity
     public Guid CampaignId { get; internal set; }
 }
 
-internal sealed class CampaignActivitityHasGift : CampaignActivity
+internal sealed class CampaignActivityHasGift : CampaignActivity
 {
     public override CampaignActivityType ActivityType { get; protected set; } = CampaignActivityType.HasGift;
 

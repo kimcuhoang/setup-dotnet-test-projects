@@ -13,11 +13,11 @@ internal abstract class CampaignActivityDto<T> where T : CampaignActivity
     }
 }
 
-internal sealed class CampaignActivityHasGiftDto : CampaignActivityDto<CampaignActivitityHasGift>
+internal sealed class CampaignActivityHasGiftDto : CampaignActivityDto<CampaignActivityHasGift>
 {
     public List<string> Gifts { get; set; } = [];
 
-    public CampaignActivityHasGiftDto From(CampaignActivitityHasGift activity)
+    public CampaignActivityHasGiftDto From(CampaignActivityHasGift activity)
     {
         this.FromBase(activity);
         this.Gifts = activity.Gifts;

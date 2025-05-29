@@ -10,7 +10,7 @@ public class TestSetupWithOOP
     {
         var campaign = new Campaign(Guid.NewGuid());
 
-        var activityHasGift = campaign.SetupActivity<CampaignActivitityHasGift>(Guid.NewGuid());
+        var activityHasGift = campaign.SetupActivity<CampaignActivityHasGift>(Guid.NewGuid());
         activityHasGift.Gifts.Add("Gift1");
         activityHasGift.Gifts.Add("Gift2");
 
@@ -55,7 +55,7 @@ public class TestSetupWithOOP
     {
         var campaign = new Campaign(Guid.NewGuid());
 
-        var activityHasGift = campaign.SetupActivity<CampaignActivitityHasGift>(Guid.NewGuid());
+        var activityHasGift = campaign.SetupActivity<CampaignActivityHasGift>(Guid.NewGuid());
         activityHasGift.Gifts.Add("Gift1");
         activityHasGift.Gifts.Add("Gift2");
 

@@ -13,7 +13,7 @@ internal class CampaignDtoV1
         {
             Id = campaign.Id,
             HasGiftActivities = campaign.Activities
-                                        .OfType<CampaignActivitityHasGift>()
+                                        .OfType<CampaignActivityHasGift>()
                                         .Select(_ => new CampaignActivityHasGiftDtoV1().FromBase(_)),
             HasFunnyWordActivities = campaign.Activities
                                         .OfType<CampaignActivityHasFunnyWord>()

@@ -17,11 +17,11 @@ internal abstract class CampaignActivityDtoV1<TClass, TDto>
     }
 }
 
-internal sealed class CampaignActivityHasGiftDtoV1 : CampaignActivityDtoV1<CampaignActivitityHasGift, CampaignActivityHasGiftDtoV1>
+internal sealed class CampaignActivityHasGiftDtoV1 : CampaignActivityDtoV1<CampaignActivityHasGift, CampaignActivityHasGiftDtoV1>
 {
     public List<string> Gifts { get; set; } = [];
 
-    public override CampaignActivityHasGiftDtoV1 FromBase(CampaignActivitityHasGift activity)
+    public override CampaignActivityHasGiftDtoV1 FromBase(CampaignActivityHasGift activity)
     {
         base.FromBase(activity);
         this.Gifts = activity.Gifts;
