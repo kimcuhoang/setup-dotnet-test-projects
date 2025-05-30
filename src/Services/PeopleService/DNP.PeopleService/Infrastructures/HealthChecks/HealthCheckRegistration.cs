@@ -3,7 +3,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System.Text;
 using System.Text.Json;
 
-namespace DNP.PeopleService.HealthChecks;
+namespace DNP.PeopleService.Infrastructures.HealthChecks;
 
 public static class HealthCheckRegistration
 {

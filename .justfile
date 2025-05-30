@@ -15,7 +15,7 @@ add-migration name:
 	clear
 	dotnet ef migrations add {{name}} \
 		-p src/Services/PeopleService/DNP.PeopleService -s src/Services/PeopleService/DNP.PeopleService \
-		-c PeopleDbContext -o Persistence/Migrations
+		-c PeopleDbContext -o Infrastructures/Persistence/Migrations
 
 remove-migration:
 	clear

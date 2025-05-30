@@ -2,11 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace DNP.PeopleService.Persistence;
+namespace DNP.PeopleService.Infrastructures.Persistence;
 
 public class PeopleDbContext(DbContextOptions options) : DbContext(options)
 {
-    public DbSet<Person> People => this.Set<Person>();
+    public DbSet<Person> People => Set<Person>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -15,10 +15,10 @@ public class PeopleDbContext(DbContextOptions options) : DbContext(options)
 
     public void SeedingData()
     {
-        if (!this.People.Any(p => p.Id == Person.Default.Id))
+        if (!People.Any(p => p.Id == Person.Default.Id))
         {
-            this.People.Add(Person.Default);
-            this.SaveChanges();
+            People.Add(Person.Default);
+            SaveChanges();
         }
     }
 }

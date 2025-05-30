@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace DNP.PeopleService.Persistence;
+namespace DNP.PeopleService.Infrastructures.Persistence;
 
 internal static class PersistenceRegistration
 {

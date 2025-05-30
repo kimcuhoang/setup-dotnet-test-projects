@@ -1,4 +1,4 @@
-﻿using DNP.PeopleService.Persistence;
+﻿using DNP.PeopleService.Infrastructures.Persistence;
 
 namespace DNP.PeopleService.Features.People.Domain;
 

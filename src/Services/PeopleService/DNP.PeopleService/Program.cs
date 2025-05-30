@@ -1,6 +1,6 @@
 using DNP.PeopleService.Features.People;
-using DNP.PeopleService.HealthChecks;
-using DNP.PeopleService.Persistence;
+using DNP.PeopleService.Infrastructures.HealthChecks;
+using DNP.PeopleService.Infrastructures.Persistence;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
