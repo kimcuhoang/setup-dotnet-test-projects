@@ -1,7 +1,6 @@
-using DNP.PeopleService.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace DNP.PeopleService.Persistence;
+namespace DNP.PeopleService.Infrastructures.Persistence;
 
 internal static class PersistenceRegistration
 {
@@ -20,23 +19,14 @@ internal static class PersistenceRegistration
             db.UseSeeding((dbContext, _) =>
             {
                 var peopleDbContext = (PeopleDbContext)dbContext;
-                var defaultPerson = peopleDbContext.People.FirstOrDefault(p => p.Id == Person.Default.Id);
-                if (defaultPerson == null)
-                {
-                    peopleDbContext.Add(Person.Default);
-                    peopleDbContext.SaveChanges();
-                }
+                peopleDbContext.SeedingData();
             });
 
             db.UseAsyncSeeding(async (dbContext, _, cancellationToken) =>
             {
+                await Task.Yield();
                 var peopleDbContext = (PeopleDbContext)dbContext;
-                var defaultPerson = await peopleDbContext.People.FirstOrDefaultAsync(p => p.Id == Person.Default.Id, cancellationToken);
-                if (defaultPerson == null)
-                {
-                    peopleDbContext.Add(Person.Default);
-                    await peopleDbContext.SaveChangesAsync(cancellationToken);
-                }
+                peopleDbContext.SeedingData();
             });
         });
 

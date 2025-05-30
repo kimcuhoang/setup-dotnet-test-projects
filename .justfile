@@ -15,7 +15,7 @@ add-migration name:
 	clear
 	dotnet ef migrations add {{name}} \
 		-p src/Services/PeopleService/DNP.PeopleService -s src/Services/PeopleService/DNP.PeopleService \
-		-c PeopleDbContext -o Persistence/Migrations
+		-c PeopleDbContext -o Infrastructures/Persistence/Migrations
 
 remove-migration:
 	clear
@@ -54,7 +54,7 @@ ms-test: build
 	clear
 	dotnet run --project src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3 --no-build --no-restore --verbosity normal
 
-start: migration-bundle migration-run build
+start: migration-bundle migration-run
 	clear
 	dotnet watch --project src/Services/PeopleService/DNP.PeopleService \
 		--no-build --no-launch-profile --no-restore --verbosity normal 

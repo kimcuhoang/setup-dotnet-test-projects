@@ -1,4 +1,4 @@
-﻿namespace DNP.PeopleService.Domain;
+﻿namespace DNP.PeopleService.Features.People.Domain;
 
 public class Person
 {

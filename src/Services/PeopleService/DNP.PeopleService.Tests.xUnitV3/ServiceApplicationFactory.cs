@@ -2,11 +2,9 @@
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
 
 namespace DNP.PeopleService.Tests.xUnitV3;
@@ -20,37 +18,23 @@ public class ServiceApplicationFactory : WebApplicationFactory<Program>
         this._connectionString = connectionString;
         Debug.WriteLine($"{nameof(ServiceApplicationFactory)} constructor");
     }
-
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        var settingsInMemory = new Dictionary<string, string?>
-        {
-            ["ConnectionStrings:Default"] = this._connectionString,
-            ["Logging:LogLevel:Microsoft.EntityFrameworkCore.Database.Command"] = "Information"
-        };
-
-        var configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(settingsInMemory)
-                .Build();
+        builder.UseEnvironment("Integration-Test");
 
         builder
-            .UseEnvironment("Integration-Test")
-            .UseContentRoot(Directory.GetCurrentDirectory())
-            .UseConfiguration(configuration)
-            .UseTestServer()
-            .ConfigureAppConfiguration(cfg =>
-            {
-                cfg.AddInMemoryCollection(settingsInMemory);
-            })
+            .UseSetting("ConnectionStrings:Default", this._connectionString)
+            .UseSetting("Logging:LogLevel:Microsoft.EntityFrameworkCore.Database.Command", "Information")
+            .UseSetting("Logging:LogLevel:Microsoft.EntityFrameworkCore.Database.Command", "Warning");
+
+        builder
             .ConfigureServices(services =>
             {
                 services.RemoveAll<IHostedService>();
             })
             .ConfigureTestServices(services =>
             {
-                //TODO: override services for testing only
-
-                services.AddHostedService<DatabaseMigrationBackgroundService>();
+                services.AddHostedService<StartupTestRunner>();
             });
     }
 

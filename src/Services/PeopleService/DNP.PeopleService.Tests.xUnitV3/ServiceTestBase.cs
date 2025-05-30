@@ -1,6 +1,4 @@
 ﻿
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DNP.PeopleService.Tests.xUnitV3;
 
 public abstract class ServiceTestBase(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper) : IAsyncLifetime
@@ -15,7 +13,15 @@ public abstract class ServiceTestBase(ServiceTestAssemblyFixture testCollectionF
 
     protected readonly Faker Faker = new();
 
-    public virtual ValueTask DisposeAsync() => ValueTask.CompletedTask;
+    public virtual async ValueTask DisposeAsync()
+    {
+        await this.ExecuteDbContextAsync(async dbContext =>
+        {
+            await dbContext.Set<PersonDomain>()
+                .Where(_ => _.Id != PersonDomain.Default.Id)
+                .ExecuteDeleteAsync(this.CancellationToken);
+        });
+    }
 
     public virtual ValueTask InitializeAsync() => ValueTask.CompletedTask;
 

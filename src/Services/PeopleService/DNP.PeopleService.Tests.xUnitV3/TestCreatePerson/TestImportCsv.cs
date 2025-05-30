@@ -1,6 +1,6 @@
 ﻿using NPOI.XSSF.UserModel;
 using System.Text;
-using static DNP.PeopleService.Controllers.ImportController;
+using static DNP.PeopleService.Features.People.ImportController;
 
 namespace DNP.PeopleService.Tests.xUnitV3.TestCreatePerson;
 public class TestImportCsv(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper) 
@@ -9,7 +9,7 @@ public class TestImportCsv(ServiceTestAssemblyFixture testCollectionFixture, ITe
     [Fact]
     public async Task ImportPersonCodeViaCsv()
     {
-        await ExecuteHttpClientAsync(async httpClient =>
+        await this.ExecuteHttpClientAsync(async httpClient =>
         {
             var sb = new StringBuilder().AppendLine("Code");
 
@@ -44,7 +44,7 @@ public class TestImportCsv(ServiceTestAssemblyFixture testCollectionFixture, ITe
     [Fact]
     public async Task ImportPersonCodeViaExcel()
     {
-        await ExecuteHttpClientAsync(async httpClient =>
+        await this.ExecuteHttpClientAsync(async httpClient =>
         {
             const int numberOfCodes = 10;
 
