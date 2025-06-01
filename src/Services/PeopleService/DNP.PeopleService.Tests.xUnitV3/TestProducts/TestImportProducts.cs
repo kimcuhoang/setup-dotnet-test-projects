@@ -3,7 +3,7 @@ using NPOI.XSSF.UserModel;
 using System.Text;
 
 namespace DNP.PeopleService.Tests.xUnitV3.TestProducts;
-public class TestImportProducts(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper) 
+public class TestImportProducts(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper)
     : ServiceTestBase(testCollectionFixture, testOutputHelper)
 {
     [Fact]

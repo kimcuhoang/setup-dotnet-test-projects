@@ -1,24 +1,50 @@
 ﻿using DNP.PeopleService.Tests.xUnitV3.TestOOP.Domain;
 
 namespace DNP.PeopleService.Tests.xUnitV3.TestOOP.DtoV1;
-internal class CampaignDtoV1
-{
-    public Guid Id { get; init; }
-    public IEnumerable<CampaignActivityHasGiftDtoV1> HasGiftActivities { get; init; }
-    public IEnumerable<CampaignActivityHasFunnyWordDtoV1> HasFunnyWordActivities { get; init; }
 
-    public static CampaignDtoV1 From(Campaign campaign)
+internal abstract class DtoBase<TClass, TDto>
+    where TClass : BaseEntity
+    where TDto : DtoBase<TClass, TDto>
+{
+    public Guid Id { get; set; }
+
+    public virtual TDto FromBase(TClass entity)
     {
-        var campaignDto = new CampaignDtoV1
-        {
-            Id = campaign.Id,
-            HasGiftActivities = campaign.Activities
-                                        .OfType<CampaignActivityHasGift>()
-                                        .Select(_ => new CampaignActivityHasGiftDtoV1().FromBase(_)),
-            HasFunnyWordActivities = campaign.Activities
-                                        .OfType<CampaignActivityHasFunnyWord>()
-                                        .Select(_ => new CampaignActivityHasFunnyWordDtoV1().FromBase(_))
-        };
-        return campaignDto;
+        this.Id = entity.Id;
+        return (TDto)this;
+    }
+}
+
+internal abstract class DtoHasAuditBase<TClass, TDto> : DtoBase<TClass, TDto>
+    where TClass : BaseEntityHasAudit
+    where TDto : DtoHasAuditBase<TClass, TDto>
+{
+    public DateTime CreatedAt { get; set; }
+    public override TDto FromBase(TClass entity)
+    {
+        base.FromBase(entity);
+        this.CreatedAt = entity.CreatedAt;
+        return (TDto)this;
+    }
+}
+
+internal class CampaignDtoV1 : DtoHasAuditBase<Campaign, CampaignDtoV1>
+{
+    public IEnumerable<CampaignActivityHasGiftDtoV1> HasGiftActivities { get; set; }
+    public IEnumerable<CampaignActivityHasFunnyWordDtoV1> HasFunnyWordActivities { get; set; }
+
+    public override CampaignDtoV1 FromBase(Campaign entity)
+    {
+        base.FromBase(entity);
+
+        this.HasGiftActivities = entity.Activities
+                                    .OfType<CampaignActivityHasGift>()
+                                    .Select(_ => new CampaignActivityHasGiftDtoV1().FromBase(_));
+
+        this.HasFunnyWordActivities = entity.Activities
+                                    .OfType<CampaignActivityHasFunnyWord>()
+                                    .Select(_ => new CampaignActivityHasFunnyWordDtoV1().FromBase(_));
+
+        return this;
     }
 }

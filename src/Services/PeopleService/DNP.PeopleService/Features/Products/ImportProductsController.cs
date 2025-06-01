@@ -9,7 +9,7 @@ namespace DNP.PeopleService.Features.Products;
 [ApiController]
 public class ImportProductsController : ControllerBase
 {
-    
+
     [HttpPost("/products/import-csv")]
     [ProducesResponseType<List<ImportProductModel>>(StatusCodes.Status200OK)]
     public IActionResult DoImportCsv(IFormFile file)

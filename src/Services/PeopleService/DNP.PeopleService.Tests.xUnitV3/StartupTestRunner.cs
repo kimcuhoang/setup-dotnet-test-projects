@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 
 namespace DNP.PeopleService.Tests.xUnitV3;
 internal class StartupTestRunner(IServiceScopeFactory serviceScopeFactory) : IHostedService

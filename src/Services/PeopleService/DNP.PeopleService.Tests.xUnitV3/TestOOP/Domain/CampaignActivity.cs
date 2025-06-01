@@ -2,9 +2,8 @@
 
 internal enum CampaignActivityType { HasGift, HasFunnyWord }
 
-internal abstract class CampaignActivity
+internal abstract class CampaignActivity : BaseEntityHasAudit
 {
-    public Guid Id { get; internal set; }
     public abstract CampaignActivityType ActivityType { get; protected set; }
     public Campaign Campaign { get; internal set; }
     public Guid CampaignId { get; internal set; }

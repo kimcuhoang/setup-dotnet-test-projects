@@ -2,16 +2,15 @@
 
 namespace DNP.PeopleService.Tests.xUnitV3.TestOOP.DtoV1;
 
-internal abstract class CampaignActivityDtoV1<TClass, TDto>
+internal abstract class CampaignActivityDtoV1<TClass, TDto> : DtoHasAuditBase<TClass, TDto>
         where TClass : CampaignActivity
         where TDto : CampaignActivityDtoV1<TClass, TDto>
 {
-    public Guid Id { get; set; }
     public CampaignActivityType ActivityType { get; set; }
 
-    public virtual TDto FromBase(TClass activity)
+    public override TDto FromBase(TClass activity)
     {
-        this.Id = activity.Id;
+        base.FromBase(activity);
         this.ActivityType = activity.ActivityType;
         return (TDto)this;
     }

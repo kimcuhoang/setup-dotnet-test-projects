@@ -3,7 +3,7 @@ using System.Text;
 using static DNP.PeopleService.Features.People.ImportController;
 
 namespace DNP.PeopleService.Tests.xUnitV3.TestCreatePerson;
-public class TestImportCsv(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper) 
+public class TestImportCsv(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper)
     : ServiceTestBase(testCollectionFixture, testOutputHelper)
 {
     [Fact]
@@ -63,8 +63,8 @@ public class TestImportCsv(ServiceTestAssemblyFixture testCollectionFixture, ITe
             workBook.Write(excelStream, leaveOpen: true);
 
             using var formData = new MultipartFormDataContent();
-            formData.Add(content: new StreamContent(excelStream), 
-                        name: "file", 
+            formData.Add(content: new StreamContent(excelStream),
+                        name: "file",
                         fileName: "abc.excel");
 
             var response = await httpClient.PostAsync("/import-excel", formData);

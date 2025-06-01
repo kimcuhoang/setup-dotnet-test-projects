@@ -27,7 +27,7 @@ public class ImportController : ControllerBase
 
     [HttpPost("import-excel")]
     [ProducesResponseType<List<PersonCode>>(StatusCodes.Status200OK)]
-    public  IActionResult DoImportExcel([FromForm] IFormFile file)
+    public IActionResult DoImportExcel([FromForm] IFormFile file)
     {
         var records = new ExcelMapper(file.OpenReadStream()) { HeaderRow = true }.Fetch<PersonCode>();
         return Ok(records.ToList());
