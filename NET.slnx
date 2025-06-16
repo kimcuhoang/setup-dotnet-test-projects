@@ -1,15 +1,18 @@
 <Solution>
-  <Folder Name="/Services/" />
-  <Folder Name="/Services/People/">
-    <Project Path="./src/Services/PeopleService/DNP.PeopleService/DNP.PeopleService.csproj" />
-    <Project Path="./src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3/DNP.PeopleService.Tests.xUnitV3.csproj" />
-  </Folder>
-  <Folder Name="/__/">
+  <Folder Name="/.common/">
     <File Path=".gitignore" />
     <File Path=".justfile" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
     <File Path="global.json" />
     <File Path="README.md" />
+  </Folder>
+  <Folder Name="/.github/">
+    <File Path=".github/workflows/dev.yaml" />
+  </Folder>
+  <Folder Name="/Services/" />
+  <Folder Name="/Services/People/">
+    <Project Path="src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3/DNP.PeopleService.Tests.xUnitV3.csproj" />
+    <Project Path="src/Services/PeopleService/DNP.PeopleService/DNP.PeopleService.csproj" />
   </Folder>
 </Solution>
