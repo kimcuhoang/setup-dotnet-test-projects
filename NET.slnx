@@ -12,7 +12,8 @@
   </Folder>
   <Folder Name="/Services/" />
   <Folder Name="/Services/AzureFunctions/">
-    <Project Path="src/AzureFunctions/AzFunc.Example/AzFunc.Example.csproj" Id="31ff3fc5-04b8-4aa2-91a2-5824869ae2e5" />
+    <Project Path="src/AzureFunctions/AzFunc.Example.Tests/AzFunc.Example.Tests.csproj" />
+    <Project Path="src/AzureFunctions/AzFunc.Example/AzFunc.Example.csproj" />
   </Folder>
   <Folder Name="/Services/People/">
     <Project Path="src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3/DNP.PeopleService.Tests.xUnitV3.csproj" />

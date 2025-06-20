@@ -5,6 +5,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Microsoft.Azure.Functions.Extensions" />
 		<!-- Application Insights isn't enabled by default. See https://aka.ms/AAt8mw4. -->
 		<!-- <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" /> -->
 		<!-- <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" /> -->
@@ -22,6 +23,6 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-		<Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext"/>
+		<Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext" />
 	</ItemGroup>
 </Project>

@@ -5,9 +5,19 @@ var builder = FunctionsApplication.CreateBuilder(args);
 
 builder.ConfigureFunctionsWebApplication();
 
+
 // Application Insights isn't enabled by default. See https://aka.ms/AAt8mw4.
 // builder.Services
 //     .AddApplicationInsightsTelemetryWorkerService()
 //     .ConfigureFunctionsApplicationInsights();
 
-builder.Build().Run();
+
+var app = builder.Build();
+await app.StartAsync();
+
+
+public partial class Program
+{
+    // This partial class is used to allow the FunctionsApplication to be built and run.
+    // The main entry point is defined in the FunctionsApplication class.
+}

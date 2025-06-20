@@ -3,10 +3,10 @@
     "logging": {
         "applicationInsights": {
             "samplingSettings": {
-                "isEnabled": true,
+                "isEnabled": false,
                 "excludedTypes": "Request"
             },
-            "enableLiveMetricsFilters": true
+            "enableLiveMetricsFilters": false
         }
     }
 }

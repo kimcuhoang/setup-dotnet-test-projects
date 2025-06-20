@@ -58,3 +58,12 @@ start: migration-bundle migration-run
 	clear
 	dotnet watch --project src/Services/PeopleService/DNP.PeopleService \
 		--no-build --no-launch-profile --no-restore --verbosity normal 
+
+
+## Azure Functions
+pre-azf:
+	clear
+	just -f ./.justfile-az-func pre-azf
+
+azf:
+	just -f ./.justfile-az-func azf

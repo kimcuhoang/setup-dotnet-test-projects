@@ -1,0 +1,15 @@
+# use PowerShell instead of sh:
+set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
+
+default:
+	clear
+	just --list
+
+pre-azf:
+	clear
+	npm install -g azure-functions-core-tools@4
+
+
+azf:
+	clear
+	cd src/AzureFunctions/AzFunc.Example && pwd && func start --verbose --port 7071
