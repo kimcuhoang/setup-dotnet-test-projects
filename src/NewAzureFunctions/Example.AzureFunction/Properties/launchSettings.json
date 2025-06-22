@@ -1,8 +1,8 @@
 {
   "profiles": {
-    "AzFunc.Example": {
+    "Example.AzureFunction": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7288 --verbose",
+      "commandLineArgs": "--port 7275 --verbose",
       "launchBrowser": true
     }
   }

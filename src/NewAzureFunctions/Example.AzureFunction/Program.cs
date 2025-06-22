@@ -6,9 +6,3 @@ var builder = FunctionsApplication.CreateBuilder(args);
 builder.ConfigureFunctionsWebApplication();
 
 builder.Build().Run();
-
-public partial class Program
-{
-    // This class is intentionally left empty.
-    // It serves as the entry point for the Azure Functions application.
-}
