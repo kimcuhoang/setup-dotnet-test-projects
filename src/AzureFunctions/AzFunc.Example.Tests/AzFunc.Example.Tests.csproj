@@ -1,23 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>AzFunc.Example.Tests</RootNamespace>
-    <!-- To enable the Microsoft Testing Platform 'dotnet test' experience, add property: -->
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<RootNamespace>AzFunc.Example.Tests</RootNamespace>
+		<!-- To enable the Microsoft Testing Platform 'dotnet test' experience, add property: -->
 		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
 		<!-- To enable the Microsoft Testing Platform native command line experience, add property: -->
 		<UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
-  </PropertyGroup>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Using Include="Xunit" />
-  </ItemGroup>
+	<ItemGroup>
+		<Using Include="Xunit" />
+	</ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
 		<PackageReference Include="Microsoft.Azure.WebJobs" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
@@ -29,9 +29,9 @@
 		<PackageReference Include="Testcontainers.MsSql" />
 	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="../AzFunc.Example/AzFunc.Example.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="../AzFunc.Example/AzFunc.Example.csproj" />
+	</ItemGroup>
 
 
 </Project>

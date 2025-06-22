@@ -1,9 +1,9 @@
 ﻿using Microsoft.Azure.Functions.Worker;
 
 namespace AzFunc.Example.Tests.Helpers;
-public class TestFunctionContext(string functionId) : FunctionContext
+public class TestFunctionContext: FunctionContext
 {
-    public override string FunctionId { get; } = functionId;
+    public override string FunctionId { get; }
     public override string InvocationId { get; }
     public override TraceContext TraceContext { get; }
     public override BindingContext BindingContext { get; }
