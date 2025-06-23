@@ -16,6 +16,7 @@
     <Project Path="src/AzureFunctions/AzFunc.Example/AzFunc.Example.csproj" />
   </Folder>
   <Folder Name="/Services/NewAzureFunctions/">
+    <Project Path="src/NewAzureFunctions/Example.AzureFunction.xUnit/Example.AzureFunction.xUnit.csproj" />
     <Project Path="src/NewAzureFunctions/Example.AzureFunction/Example.AzureFunction.csproj" Id="11324cc3-4637-4a5f-bbde-150a2e09f13c" />
   </Folder>
   <Folder Name="/Services/People/">

@@ -5,19 +5,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Example.AzureFunction;
 
-public class SimpleHttpAzureFunction
+public class SimpleHttpAzureFunction(ILogger<SimpleHttpAzureFunction> logger)
 {
-    private readonly ILogger<SimpleHttpAzureFunction> _logger;
-
-    public SimpleHttpAzureFunction(ILogger<SimpleHttpAzureFunction> logger)
-    {
-        _logger = logger;
-    }
-
     [Function("SimpleHttp")]
-    public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
+    public Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
     {
-        _logger.LogInformation("C# HTTP trigger function processed a request.");
-        return new OkObjectResult("Welcome to Azure Functions!");
+        logger.LogInformation("C# HTTP trigger function processed a request.");
+        return Task.FromResult<IActionResult>(new OkObjectResult("Welcome to Azure Functions!"));
     }
 }

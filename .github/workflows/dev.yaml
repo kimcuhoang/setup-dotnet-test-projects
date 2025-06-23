@@ -12,23 +12,34 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 9.0.x
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: Build
-      run: dotnet build --no-restore
+      - name: Build
+        run: dotnet build --no-restore
 
-    - name: Test by Testing.Platform .NET 9 & xUnit.v3 for MsSQL
-      run: dotnet run --no-build --verbosity quiet --project src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3
+      - name: Test by Testing.Platform .NET 9 & xUnit.v3 for MsSQL
+        run: dotnet run --no-build --verbosity quiet --project src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install Azure Functions Core Tools
+        # The --unsafe-perm flag is required to allow the installation of Azure Functions Core Tools
+        run: npm install -g azure-functions-core-tools@4 --unsafe-perm true
+
+      - name: Test Azure Functions
+        run: dotnet test --no-build --no-restore src/NewAzureFunctions/Example.AzureFunction.xUnit

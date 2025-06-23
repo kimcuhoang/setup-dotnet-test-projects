@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Example.AzureFunction.xUnit</RootNamespace>
+    <!-- To enable the Microsoft Testing Platform 'dotnet test' experience, add property: -->
+		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+		<!-- To enable the Microsoft Testing Platform native command line experience, add property: -->
+		<UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <!-- <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally> -->
+  </PropertyGroup>
+
+  <ItemGroup>
+		<Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="Xunit" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoBogus.Conventions" />
+    <PackageReference Include="Microsoft.Learn.AzureFunctionsTesting.Extension.DebugProcess" />
+		<PackageReference Include="Shouldly" />
+		<PackageReference Include="xunit" />
+		<PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Microsoft.Learn.AzureFunctionsTesting" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Example.AzureFunction/Example.AzureFunction.csproj" />
+  </ItemGroup>
+
+</Project>
