@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Example.AzureFunction.xUnit.WindowsTestHelpers;
+using Example.AzureFunction.xUnit.TestHelpers.DebuggerTools;
 using Shouldly;
 
 namespace Example.AzureFunction.xUnit.BeforeTests;
@@ -7,6 +7,7 @@ namespace Example.AzureFunction.xUnit.BeforeTests;
 public class TestCollectionFixture: IAsyncLifetime
 {
     private Process? hostProcess;
+    private readonly BaseDebuggerTools debuggerTools;
     public HttpClient Client { get; }
 
     public TestCollectionFixture()
@@ -16,6 +17,12 @@ public class TestCollectionFixture: IAsyncLifetime
             BaseAddress = new Uri("http://localhost:7071/"),
             Timeout = TimeSpan.FromMinutes(5)
         };
+
+        this.debuggerTools = OperatingSystem.IsWindows()
+            ? new WindowsDebuggerTools()
+            : OperatingSystem.IsLinux()
+                ? new LinuxDebuggerTools()
+                : throw new PlatformNotSupportedException("This test fixture only supports Windows and Linux platforms.");
     }
 
     public async Task InitializeAsync()
@@ -57,12 +64,9 @@ public class TestCollectionFixture: IAsyncLifetime
             { "IS_FUNCTIONS_TEST", Boolean.TrueString }
         };
 
-        if (OperatingSystem.IsWindows())
+        if (Debugger.IsAttached)
         {
-            if (Debugger.IsAttached)
-            {
-                envVars["__WAIT_FOR_DEBUGGER__"] = Boolean.TrueString;
-            }
+            envVars["__WAIT_FOR_DEBUGGER__"] = Boolean.TrueString;
         }
 
         if (!hostProcess.Start())
@@ -70,12 +74,9 @@ public class TestCollectionFixture: IAsyncLifetime
             throw new InvalidOperationException("Could not start Azure Functions host.");
         }
 
-        if (OperatingSystem.IsWindows())
+        if (Debugger.IsAttached && OperatingSystem.IsWindows())
         {
-            if (Debugger.IsAttached)
-            {
-                await WindowsDebuggerTools.AttachToProcessAsync(this.hostProcess.Id);
-            }
+            await this.debuggerTools.AttachToProcessAsync(this.hostProcess.Id);
         }
 
         await this.EnsureTheHostToBeReady();
