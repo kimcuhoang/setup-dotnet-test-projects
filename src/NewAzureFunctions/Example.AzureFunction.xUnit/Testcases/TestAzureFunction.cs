@@ -1,7 +1,7 @@
 using Example.AzureFunction.xUnit.BeforeTests;
 using Shouldly;
 
-namespace Example.AzureFunction.xUnit;
+namespace Example.AzureFunction.xUnit.Testcases;
 
 public class TestAzureFunction(TestCollectionFixture testCollectionFixture) : AzureFunctionTestBase(testCollectionFixture)
 {

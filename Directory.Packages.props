@@ -15,8 +15,7 @@
     <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="9.0.6" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
     <PackageVersion Include="Grpc.AspNetCore" Version="2.71.0" />
-    <PackageVersion Include="Microsoft.Learn.AzureFunctionsTesting.Extension.DebugProcess" Version="1.1.0" />
-    <PackageVersion Include="Microsoft.Learn.AzureFunctionsTesting.Extension.DebugProcess.Core" Version="1.1.0" />
+    
   </ItemGroup>
   <ItemGroup>
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
@@ -38,8 +37,10 @@
     <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore" Version="2.0.2" />
     <PackageVersion Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.5" />
     <PackageVersion Include="Microsoft.Azure.WebJobs" Version="3.0.41" />
-    <PackageVersion Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
-    <PackageVersion Include="Microsoft.Learn.AzureFunctionsTesting" Version="1.2.0" />
     <PackageVersion Include="xunit" Version="2.9.3" />
+    <PackageVersion Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
+    <!-- <PackageVersion Include="Microsoft.Learn.AzureFunctionsTesting" Version="1.2.0" /> -->
+    <PackageVersion Include="Microsoft.Learn.AzureFunctionsTesting.Extension.DebugProcess" Version="1.1.0" />
+    <PackageVersion Include="Microsoft.Learn.AzureFunctionsTesting.Extension.DebugProcess.Core" Version="1.1.0" />
   </ItemGroup>
 </Project>

@@ -1,37 +1,57 @@
 
-using EnvDTE;
 using System.Runtime.InteropServices;
+using EnvDTE;
+using Microsoft.Learn.AzureFunctionsTesting.Extension.DebugProcess.Core;
 using Microsoft.VisualStudio.OLE.Interop;
 
+namespace Example.AzureFunction.xUnit.DebuggerTools.DevTool;
 
-namespace Example.AzureFunction.xUnit.TestHelpers.DevelopmentTools;
-
-public class VisualStudioTool : DevelopmentToolBase
+public class VisualStudio : DevToolBase
 {
-    protected override string ToolName => "Visual Studio IDE";
-
-    public override async Task AttachToProcessAsync(int processId, Func<Task<bool>> waiter)
+    public async override Task AttachDebuggerAsync(int processId)
     {
         var process = this.GetProcess(processId);
-        if (process != null)
+        if (process == null)
         {
-            process.Attach();
-            System.Diagnostics.Debug.WriteLine($"Automatically attached debugger to func.exe process {processId}");
-
-            // isolated functions spin up yet another child process, so wait for the signal that it has started
-            // and then try attaching to that process
-            try
-            {
-                await waiter();
-                var isolatedProcess = this.FindIsolatedProcess();
-                if (isolatedProcess != null)
-                {
-                    isolatedProcess.Attach();
-                    System.Diagnostics.Debug.WriteLine($"Automatically attached debugger to isolated worker process");
-                }
-            }
-            catch { }
+            return;
         }
+
+        MessageFilter.Register();
+
+        process.Attach();
+        System.Diagnostics.Debug.WriteLine($"Automatically attached debugger to func.exe process {processId}");
+
+        // isolated functions spin up yet another child process, so wait for the signal that it has started
+        // and then try attaching to that process
+        try
+        {
+            await this.WaitForSignalAsync(DebuggerConstants.SignalName, TimeSpan.FromSeconds(45));
+            var isolatedProcess = this.FindIsolatedProcess();
+            if (isolatedProcess != null)
+            {
+                isolatedProcess.Attach();
+                System.Diagnostics.Debug.WriteLine($"Automatically attached debugger to isolated worker process");
+            }
+        }
+        catch { }
+
+        MessageFilter.Revoke();
+    }
+
+    private Task<bool> WaitForSignalAsync(string signalName, TimeSpan timeout)
+    {
+        using var ewh = new EventWaitHandle(false, EventResetMode.ManualReset, signalName);
+
+        // optimize for special cases
+        var alreadySignalled = ewh.WaitOne(0);
+        if (alreadySignalled)
+            return Task.FromResult(true);
+        if (timeout == TimeSpan.Zero)
+            return Task.FromResult(false);
+
+        var tcs = new TaskCompletionSource<bool>();
+        var threadPoolRegistration = ThreadPool.RegisterWaitForSingleObject(ewh, (state, timedOut) => ((TaskCompletionSource<bool>?)state)?.TrySetResult(!timedOut), tcs, timeout, true);
+        return tcs.Task;
     }
 
     private Process? GetProcess(int processID)

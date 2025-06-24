@@ -1,6 +1,6 @@
 using Example.AzureFunction.xUnit.BeforeTests;
 
-namespace Example.AzureFunction.xUnit;
+namespace Example.AzureFunction.xUnit.Testcases;
 
 [Collection(nameof(TestCollection))]
 public abstract class AzureFunctionTestBase(TestCollectionFixture testCollectionFixture) : IAsyncLifetime

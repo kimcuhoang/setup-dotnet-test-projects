@@ -1,12 +1,9 @@
+namespace Example.AzureFunction.xUnit.DebuggerTools.DevTool;
 
-namespace Example.AzureFunction.xUnit.TestHelpers.DevelopmentTools;
-
-public abstract class DevelopmentToolBase
+public abstract class DevToolBase
 {
     protected List<int>? existingProcessIds = [];
-    protected abstract string ToolName { get; }
-    
-    public abstract Task AttachToProcessAsync(int processId, Func<Task<bool>> waiter);
+    public abstract Task AttachDebuggerAsync(int processId);
 
     protected T Try<T>(Func<T> func)
     {
