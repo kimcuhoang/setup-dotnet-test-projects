@@ -1,6 +1,10 @@
 ﻿namespace DNP.PeopleService.Tests.xUnitV3.TestCreatePerson;
-public class DoTestCreatePerson(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper)
-        : ServiceTestBase(testCollectionFixture, testOutputHelper)
+
+//public class DoTestCreatePerson(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper)
+//        : ServiceTestBase(testCollectionFixture, testOutputHelper)
+
+public class DoTestCreatePerson(TestCollectionFixture testCollectionFixture, ITestOutputHelper testOutputHelper, ITestContextAccessor testContextAccessor)
+                : IntegrationTestBase(testCollectionFixture, testOutputHelper, testContextAccessor)
 {
     public override async ValueTask DisposeAsync()
     {

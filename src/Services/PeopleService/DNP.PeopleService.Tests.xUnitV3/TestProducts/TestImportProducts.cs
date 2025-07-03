@@ -3,8 +3,13 @@ using NPOI.XSSF.UserModel;
 using System.Text;
 
 namespace DNP.PeopleService.Tests.xUnitV3.TestProducts;
-public class TestImportProducts(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper)
-    : ServiceTestBase(testCollectionFixture, testOutputHelper)
+//public class TestImportProducts(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper)
+//    : ServiceTestBase(testCollectionFixture, testOutputHelper)
+
+public class TestImportProducts(TestCollectionFixture testCollectionFixture, 
+                                ITestOutputHelper testOutputHelper, 
+                                ITestContextAccessor testContextAccessor)
+    : IntegrationTestBase(testCollectionFixture, testOutputHelper, testContextAccessor)
 {
     [Fact]
     public async Task TestImportByCsv()

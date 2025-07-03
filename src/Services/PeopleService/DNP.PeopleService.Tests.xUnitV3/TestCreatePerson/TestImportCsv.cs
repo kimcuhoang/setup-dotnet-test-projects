@@ -3,8 +3,14 @@ using System.Text;
 using static DNP.PeopleService.Features.People.ImportController;
 
 namespace DNP.PeopleService.Tests.xUnitV3.TestCreatePerson;
-public class TestImportCsv(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper)
-    : ServiceTestBase(testCollectionFixture, testOutputHelper)
+
+//public class TestImportCsv(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper)
+//    : ServiceTestBase(testCollectionFixture, testOutputHelper)
+
+public class TestImportCsv(TestCollectionFixture testCollectionFixture, 
+                          ITestOutputHelper testOutputHelper, 
+                          ITestContextAccessor testContextAccessor)
+    : IntegrationTestBase(testCollectionFixture, testOutputHelper, testContextAccessor)
 {
     [Fact]
     public async Task ImportPersonCodeViaCsv()

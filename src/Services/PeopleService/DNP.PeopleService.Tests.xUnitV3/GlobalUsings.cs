@@ -7,3 +7,7 @@ global using System.Text.Json;
 global using Xunit;
 global using PersonDomain = DNP.PeopleService.Features.People.Domain.Person;
 
+
+
+global using DNP.PeopleService.Tests.xUnitV3.BeforeTests;
+

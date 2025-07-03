@@ -11,6 +11,22 @@ dotnet-tools command:
 	dotnet tool {{command}} --local dotnet-outdated-tool
 	dotnet tool {{command}} --local dotnet-ef
 
+dotnet-tools-restore:
+	clear
+	dotnet tool restore
+
+outdated-list:
+	clear
+	dotnet outdated
+
+outdated-update:
+	clear
+	dotnet outdated -u
+
+list-vulnerable-packages:
+	clear
+	dotnet list package --vulnerable
+
 add-migration name:
 	clear
 	dotnet ef migrations add {{name}} \

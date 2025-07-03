@@ -1,33 +1,34 @@
-﻿
-namespace DNP.PeopleService.Tests.xUnitV3;
+﻿namespace DNP.PeopleService.Tests.xUnitV3.BeforeTests;
 
-public abstract class ServiceTestBase(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper) : IAsyncLifetime
+[Collection(nameof(TestCollection))]
+public abstract class IntegrationTestBase(TestCollectionFixture testCollectionFixture, 
+                                        ITestOutputHelper testOutputHelper,
+                                        ITestContextAccessor testContextAccessor) : IAsyncLifetime
 {
-    protected readonly ServiceApplicationFactory Factory = testCollectionFixture.Factory;
-
+    protected readonly TestApplicationFactory Factory = testCollectionFixture.Factory;
     protected readonly ITestOutputHelper TestOutputHelper = testOutputHelper;
-
     protected readonly IServiceProvider ServiceProvider = testCollectionFixture.Factory.Services;
-
-    protected readonly CancellationToken CancellationToken = TestContext.Current.CancellationToken;
+    protected readonly CancellationToken CancellationToken = testContextAccessor.Current.CancellationToken;
 
     protected readonly Faker Faker = new();
 
-    public virtual async ValueTask DisposeAsync()
+    #region Execute Service
+    protected async Task ExecuteServiceAsync(Func<IServiceProvider, Task> func)
     {
-        await this.ExecuteDbContextAsync(async dbContext =>
-        {
-            await dbContext.Set<PersonDomain>()
-                .Where(_ => _.Id != PersonDomain.Default.Id)
-                .ExecuteDeleteAsync(this.CancellationToken);
-        });
+        using var scope = this.ServiceProvider.CreateAsyncScope();
+        await func.Invoke(scope.ServiceProvider);
     }
 
-    public virtual ValueTask InitializeAsync() => ValueTask.CompletedTask;
+    protected async Task<T> ExecuteServiceAsync<T>(Func<IServiceProvider, Task<T>> func)
+    {
+        using var scope = this.ServiceProvider.CreateAsyncScope();
+        return await func.Invoke(scope.ServiceProvider);
+    } 
+    #endregion
 
     protected async Task ExecuteTransactionDbContextAsync(Func<DbContext, Task> func)
     {
-        await this.Factory.ExecuteServiceAsync(async serviceProvider =>
+        await this.ExecuteServiceAsync(async serviceProvider =>
         {
             var dbContext = serviceProvider.GetRequiredService<DbContext>();
 
@@ -53,7 +54,7 @@ public abstract class ServiceTestBase(ServiceTestAssemblyFixture testCollectionF
 
     protected async Task ExecuteDbContextAsync(Func<DbContext, Task> func)
     {
-        await this.Factory.ExecuteServiceAsync(async serviceProvider =>
+        await this.ExecuteServiceAsync(async serviceProvider =>
         {
             var dbContext = serviceProvider.GetRequiredService<DbContext>();
 
@@ -79,5 +80,17 @@ public abstract class ServiceTestBase(ServiceTestAssemblyFixture testCollectionF
 
         var jsonSerializerOptions = this.Factory.JsonSerializerSettings;
         return JsonSerializer.Deserialize<T>(content, jsonSerializerOptions);
+    }
+
+    public virtual ValueTask InitializeAsync() => ValueTask.CompletedTask;
+
+    public virtual async ValueTask DisposeAsync()
+    {
+        await this.ExecuteDbContextAsync(async dbContext =>
+        {
+            await dbContext.Set<PersonDomain>()
+                .Where(_ => _.Id != PersonDomain.Default.Id)
+                .ExecuteDeleteAsync(this.CancellationToken);
+        });
     }
 }

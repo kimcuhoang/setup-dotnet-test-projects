@@ -1,5 +1,10 @@
 ﻿namespace DNP.PeopleService.Tests.xUnitV3.TestApplications;
-public class TestApplicationStartup(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper) : ServiceTestBase(testCollectionFixture, testOutputHelper)
+
+//public class TestApplicationStartup(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper)
+//: ServiceTestBase(testCollectionFixture, testOutputHelper)
+
+public class TestApplicationStartup(TestCollectionFixture testCollectionFixture, ITestOutputHelper testOutputHelper, ITestContextAccessor testContextAccessor)
+                : IntegrationTestBase(testCollectionFixture, testOutputHelper, testContextAccessor)
 {
     [Fact]
     public async Task EnsureDefaultPersonHasBeenSeeded()

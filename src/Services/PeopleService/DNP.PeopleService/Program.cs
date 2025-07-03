@@ -1,4 +1,5 @@
 using DNP.PeopleService.Features.People;
+using DNP.PeopleService.Infrastructures.FileStorages;
 using DNP.PeopleService.Infrastructures.HealthChecks;
 using DNP.PeopleService.Infrastructures.Persistence;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -8,6 +9,7 @@ using System.Text.Unicode;
 var builder = WebApplication.CreateBuilder(args);
 
 builder
+    .AddFileStorages()
     .AddPersistence()
     .AddPeopleFeature();
 
@@ -19,6 +21,11 @@ builder.Services
         json.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
         json.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
         json.JsonSerializerOptions.AllowTrailingCommas = true;
+
+        json.JsonSerializerOptions.Converters
+            .Add(new System.Text.Json.Serialization.JsonStringEnumConverter(
+                allowIntegerValues: false,
+                namingPolicy: System.Text.Json.JsonNamingPolicy.CamelCase));
     });
 
 builder.Services.AddGrpc();

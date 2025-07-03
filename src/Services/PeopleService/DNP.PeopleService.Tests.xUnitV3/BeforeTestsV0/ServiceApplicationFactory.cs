@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 
-namespace DNP.PeopleService.Tests.xUnitV3;
+namespace DNP.PeopleService.Tests.xUnitV3.BeforeTestsV0;
 
 public class ServiceApplicationFactory : WebApplicationFactory<Program>
 {
