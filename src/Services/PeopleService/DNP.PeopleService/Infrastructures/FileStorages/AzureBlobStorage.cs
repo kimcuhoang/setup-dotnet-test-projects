@@ -1,18 +1,16 @@
 ﻿
 using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Options;
 
 namespace DNP.PeopleService.Infrastructures.FileStorages;
 
-public class AzureBlobStorage(BlobServiceClient blobServiceClient,
+public class AzureBlobStorage(BlobContainerClient blobContainerClient,
                               IOptions<FileStorageOptions> fileStorageOptions) : IFileStorage
 {
     private readonly AzureBlobOptions _azureBlobOptions = fileStorageOptions.Value.AzureBlobOptions;
 
     public async Task DeleteAsync(string fileName, CancellationToken cancellationToken = default)
     {
-        var blobContainerClient = blobServiceClient.GetBlobContainerClient(this._azureBlobOptions.ContainerName);
         var blobClient = blobContainerClient.GetBlobClient(fileName);
         var deleteResponse = await blobClient.DeleteIfExistsAsync(cancellationToken: cancellationToken);
         
@@ -25,7 +23,6 @@ public class AzureBlobStorage(BlobServiceClient blobServiceClient,
 
     public async Task<byte[]> ReadAsync(string fileName, CancellationToken cancellationToken = default)
     {
-        var blobContainerClient = blobServiceClient.GetBlobContainerClient(this._azureBlobOptions.ContainerName);
         var blobClient = blobContainerClient.GetBlobClient(fileName);
 
         using var memoryStream = new MemoryStream();
@@ -38,13 +35,6 @@ public class AzureBlobStorage(BlobServiceClient blobServiceClient,
 
     public async Task<string> SaveAsync(IFormFile formFile, CancellationToken cancellationToken = default)
     {
-        var blobContainerClient = blobServiceClient.GetBlobContainerClient(this._azureBlobOptions.ContainerName);
-        var blobContainerInfo = await blobContainerClient.CreateIfNotExistsAsync(PublicAccessType.Blob, cancellationToken: cancellationToken);
-        if (blobContainerInfo.GetRawResponse().IsError)
-        {
-            throw new InvalidOperationException($"Failed to create or access blob container '{this._azureBlobOptions.ContainerName}'. Status: {blobContainerInfo.GetRawResponse().Status}, Error: {blobContainerInfo.GetRawResponse().ReasonPhrase}");
-        }
-
         var blobClient = blobContainerClient.GetBlobClient(formFile.FileName);
         var uploadResponse = await blobClient.UploadAsync(formFile.OpenReadStream(), overwrite: true, cancellationToken: cancellationToken);
         var uploadResult = uploadResponse.GetRawResponse();

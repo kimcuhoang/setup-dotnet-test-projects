@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 namespace DNP.PeopleService.Tests.xUnitV3.BeforeTests;
+
 public class TestApplicationFactory : WebApplicationFactory<Program>
 {
     private readonly List<KeyValuePair<string, string?>> InMemorySettings =
@@ -25,7 +26,7 @@ public class TestApplicationFactory : WebApplicationFactory<Program>
     {
         init => this.InMemorySettings
             .Add(new KeyValuePair<string, string?>(
-                $"{nameof(FileStorageOptions)}:{nameof(FileStorageOptions.AzureBlobOptions)}:{nameof(AzureBlobOptions.ConnectionString)}", 
+                $"{nameof(FileStorageOptions)}:{nameof(FileStorageOptions.AzureBlobOptions)}:{nameof(AzureBlobOptions.ConnectionString)}",
                 value));
     }
 
@@ -58,5 +59,17 @@ public class TestApplicationFactory : WebApplicationFactory<Program>
             {
                 services.AddHostedService<StartupTestRunner>();
             });
+    }
+
+    public async Task ExecuteServiceAsync(Func<IServiceProvider, Task> action)
+    {
+        using var scope = this.Services.CreateAsyncScope();
+        await action(scope.ServiceProvider);
+    }
+    
+    public async Task<T> ExecuteServiceAsync<T>(Func<IServiceProvider, Task<T>> action)
+    {
+        using var scope = this.Services.CreateAsyncScope();
+        return await action(scope.ServiceProvider);
     }
 }

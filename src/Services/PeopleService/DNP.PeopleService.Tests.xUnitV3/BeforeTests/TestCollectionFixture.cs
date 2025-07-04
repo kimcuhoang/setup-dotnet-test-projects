@@ -1,8 +1,10 @@
 ﻿
+using Azure.Storage.Blobs;
 using Testcontainers.Azurite;
 using Testcontainers.MsSql;
 
 namespace DNP.PeopleService.Tests.xUnitV3.BeforeTests;
+
 public class TestCollectionFixture : IAsyncLifetime
 {
     public TestApplicationFactory Factory { get; private set; }
@@ -18,6 +20,7 @@ public class TestCollectionFixture : IAsyncLifetime
             .Build();
 
         this._azuriteContainer = new AzuriteBuilder()
+            .WithImage("mcr.microsoft.com/azure-storage/azurite:3.34.0")
             .WithAutoRemove(true)
             .WithCleanUp(true)
             .DependsOn(this._sqlContainer)
@@ -28,6 +31,15 @@ public class TestCollectionFixture : IAsyncLifetime
                     ConnectionString = this._sqlContainer.GetConnectionString(),
                     AzureStorageConnectionString = container.GetConnectionString()
                 };
+
+                await this.Factory.ExecuteServiceAsync(async services =>
+                {
+                    var blobContainerClient = services.GetRequiredService<BlobContainerClient>();
+
+                    await blobContainerClient.CreateIfNotExistsAsync(
+                        publicAccessType: Azure.Storage.Blobs.Models.PublicAccessType.Blob,
+                        cancellationToken: TestContext.Current.CancellationToken);
+                });
                 await Task.Yield();
             })
             .Build();
@@ -38,6 +50,7 @@ public class TestCollectionFixture : IAsyncLifetime
     {
         await this._sqlContainer.StartAsync();
         await this._azuriteContainer.StartAsync();
+
     }
 
     public async ValueTask DisposeAsync()

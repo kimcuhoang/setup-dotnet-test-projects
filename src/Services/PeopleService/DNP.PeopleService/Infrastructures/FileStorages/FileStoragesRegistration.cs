@@ -11,9 +11,6 @@ public static class FileStoragesRegistration
         builder.Services
             .AddOptions<FileStorageOptions>()
             .Bind(configuration.GetSection(nameof(FileStorageOptions)))
-            //.Validate(_ => _.FileStorageType is FileStorageType.AzureBlobStorage or FileStorageType.FileSystem)
-            //.Validate(_ => _.AzureBlobOptions is not null)
-            //.Validate(_ => _.FileSystemOptions is not null);
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
@@ -24,20 +21,21 @@ public static class FileStoragesRegistration
         builder.Services
             .AddSingleton(services =>
             {
-                var connectionString = services
+                var azureBlobOptions = services
                     .GetRequiredService<IOptions<FileStorageOptions>>()
-                    .Value
-                    .AzureBlobOptions
-                    .ConnectionString;
+                    .Value.AzureBlobOptions;
 
-                return new BlobServiceClient(connectionString, new BlobClientOptions
-                {
-                    Retry =
+                return new BlobContainerClient(
+                    azureBlobOptions.ConnectionString,
+                    azureBlobOptions.ContainerName,
+                    new BlobClientOptions
                     {
-                        MaxRetries = 5,
-                        Delay = TimeSpan.FromSeconds(2)
-                    }
-                });
+                        Retry =
+                        {
+                            MaxRetries = 5,
+                            Delay = TimeSpan.FromSeconds(2)
+                        }
+                    });
             });
         
         return builder;
