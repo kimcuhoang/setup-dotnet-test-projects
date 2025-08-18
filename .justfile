@@ -14,25 +14,25 @@ dotnet-tools command:
 add-migration name:
 	clear
 	dotnet ef migrations add {{name}} \
-		-p src/Services/PeopleService/DNP.PeopleService -s src/Services/PeopleService/DNP.PeopleService \
+		-p src/Services/MainService/DNP.ThisIsAMainService -s src/Services/MainService/DNP.ThisIsAMainService \
 		-c PeopleDbContext -o Infrastructures/Persistence/Migrations
 
 remove-migration:
 	clear
 	dotnet ef migrations remove \
-	-p src/Services/PeopleService/DNP.PeopleService -s src/Services/PeopleService/DNP.PeopleService \
+	-p src/Services/MainService/DNP.ThisIsAMainService -s src/Services/MainService/DNP.ThisIsAMainService \
 	-c PeopleDbContext
 
 revert-migration name:
 	clear
 	dotnet ef database update {{name}} \
-	-p src/Services/PeopleService/DNP.PeopleService -s src/Services/PeopleService/DNP.PeopleService \
+	-p src/Services/MainService/DNP.ThisIsAMainService -s src/Services/MainService/DNP.ThisIsAMainService \
 	-c PeopleDbContext
 
 migration-bundle:
 	clear
 	dotnet ef migrations bundle \
-	-p src/Services/PeopleService/DNP.PeopleService -s src/Services/PeopleService/DNP.PeopleService \
+	-p src/Services/MainService/DNP.ThisIsAMainService -s src/Services/MainService/DNP.ThisIsAMainService \
 	-c PeopleDbContext \
 	-o deploy/efbundle.exe --force
 
@@ -48,13 +48,13 @@ build:
 
 test: build
 	clear
-	dotnet test src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3 --no-build --verbosity normal
+	dotnet test src/Services/MainService/DNP.ThisIsAMainService.Tests.xUnitV3 --no-build --verbosity normal
 
 ms-test: build
 	clear
-	dotnet run --project src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3 --no-build --no-restore --verbosity normal
+	dotnet run --project src/Services/MainService/DNP.ThisIsAMainService.Tests.xUnitV3 --no-build --no-restore --verbosity normal
 
 start: migration-bundle migration-run
 	clear
-	dotnet watch --project src/Services/PeopleService/DNP.PeopleService \
+	dotnet watch --project src/Services/MainService/DNP.ThisIsAMainService \
 		--no-build --no-launch-profile --no-restore --verbosity normal 
