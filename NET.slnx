@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/.github/">
+    <File Path=".github/workflows/dev.yaml" />
+  </Folder>
   <Folder Name="/Services/" />
   <Folder Name="/Services/MainService/">
     <Project Path="src/Services/MainService/DNP.ThisIsAMainService.Tests.xUnitV3/DNP.ThisIsAMainService.Tests.xUnitV3.csproj" />
