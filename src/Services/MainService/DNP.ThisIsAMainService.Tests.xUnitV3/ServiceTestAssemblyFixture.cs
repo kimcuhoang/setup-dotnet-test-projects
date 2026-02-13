@@ -10,10 +10,12 @@ namespace DNP.PeopleService.Tests.xUnitV3;
 
 public sealed class ServiceTestAssemblyFixture(IMessageSink messageSink) : ContainerFixture<MsSqlBuilder, MsSqlContainer>(messageSink)
 {
+    private const string SqlServerImage = "mcr.microsoft.com/mssql/server:2022-latest";
     public ServiceApplicationFactory Factory { get; private set; }
-    protected override MsSqlBuilder Configure(MsSqlBuilder builder)
+
+    protected override MsSqlBuilder Configure()
     {
-        return builder
+        return new MsSqlBuilder(SqlServerImage)
                 .WithAutoRemove(true)
                 .WithCleanUp(true)
                 .WithHostname("test")
