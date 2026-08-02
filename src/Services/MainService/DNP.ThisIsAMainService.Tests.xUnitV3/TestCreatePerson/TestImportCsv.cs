@@ -1,4 +1,6 @@
-﻿using NPOI.XSSF.UserModel;
+﻿using DNP.PeopleService.Tests.xUnitV3.Infrastructure.TestSetup;
+using NPOI.XSSF.UserModel;
+using System.Net.Http.Json;
 using System.Text;
 using static DNP.ThisIsAMainService.Features.People.ImportController;
 
@@ -17,7 +19,7 @@ public class TestImportCsv(ServiceTestAssemblyFixture testCollectionFixture, ITe
 
             for (int i = 0; i < numberOfCodes; i++)
             {
-                sb.AppendLine(Faker.Random.AlphaNumeric(10).ToUpper());
+                sb.AppendLine(this.Faker.Random.AlphaNumeric(10).ToUpper());
             }
 
 
@@ -26,17 +28,17 @@ public class TestImportCsv(ServiceTestAssemblyFixture testCollectionFixture, ITe
             using var formData = new MultipartFormDataContent();
             formData.Add(new StreamContent(csvStream), name: "file", fileName: "abc.csv");
 
-            var response = await httpClient.PostAsync("/import-csv", formData);
+            var response = await httpClient.PostAsync("/import-csv", formData, this.CancellationToken);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-            var codes = await ParseResponse<List<PersonCode>>(response);
+            var codes = await response.Content.ReadFromJsonAsync<List<PersonCode>>(this.CancellationToken);
             codes.ShouldNotBeEmpty();
             codes.Count.ShouldBe(numberOfCodes);
 
-            codes!.ForEach(_ =>
+            codes.ForEach(code =>
             {
-                _.ShouldNotBeNull();
-                _.Code.ShouldNotBeNullOrEmpty();
+                code.ShouldNotBeNull();
+                code.Code.ShouldNotBeNullOrWhiteSpace();
             });
         });
     }
@@ -67,18 +69,17 @@ public class TestImportCsv(ServiceTestAssemblyFixture testCollectionFixture, ITe
                         name: "file",
                         fileName: "abc.excel");
 
-            var response = await httpClient.PostAsync("/import-excel", formData);
-
+            var response = await httpClient.PostAsync("/import-excel", formData, this.CancellationToken);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-            var codes = await ParseResponse<List<PersonCode>>(response);
+            var codes = await response.Content.ReadFromJsonAsync<List<PersonCode>>(this.CancellationToken);
             codes.ShouldNotBeEmpty();
             codes.Count.ShouldBe(numberOfCodes);
 
-            codes!.ForEach(_ =>
+            codes.ForEach(code =>
             {
-                _.ShouldNotBeNull();
-                _.Code.ShouldNotBeNullOrEmpty();
+                code.ShouldNotBeNull();
+                code.Code.ShouldNotBeNullOrWhiteSpace();
             });
         });
     }

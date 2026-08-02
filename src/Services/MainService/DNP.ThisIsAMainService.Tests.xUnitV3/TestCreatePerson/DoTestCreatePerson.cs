@@ -1,4 +1,6 @@
-﻿namespace DNP.PeopleService.Tests.xUnitV3.TestCreatePerson;
+﻿using DNP.PeopleService.Tests.xUnitV3.Infrastructure.TestSetup;
+
+namespace DNP.PeopleService.Tests.xUnitV3.TestCreatePerson;
 public class DoTestCreatePerson(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper)
         : ServiceTestBase(testCollectionFixture, testOutputHelper)
 {

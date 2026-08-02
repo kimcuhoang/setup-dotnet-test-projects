@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 
-namespace DNP.PeopleService.Tests.xUnitV3;
+namespace DNP.PeopleService.Tests.xUnitV3.Infrastructure.HostedServices;
 internal class StartupTestRunner(IServiceScopeFactory serviceScopeFactory) : IHostedService
 {
     public async Task StartAsync(CancellationToken cancellationToken)

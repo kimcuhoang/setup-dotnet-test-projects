@@ -1,12 +1,15 @@
-﻿namespace DNP.PeopleService.Tests.xUnitV3;
+﻿using DNP.PeopleService.Tests.xUnitV3.Infrastructure.HttpDelegatingHandlers;
+using Microsoft.AspNetCore.Mvc.Testing;
 
-public abstract class ServiceTestBase(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper) : IAsyncLifetime
+namespace DNP.PeopleService.Tests.xUnitV3.Infrastructure.TestSetup;
+
+public abstract class ServiceTestBase(ServiceTestAssemblyFixture testAssemblyFixture, ITestOutputHelper testOutputHelper) : IAsyncLifetime
 {
-    protected readonly ServiceApplicationFactory Factory = testCollectionFixture.Factory;
+    protected readonly ServiceApplicationFactory Factory = testAssemblyFixture.Factory;
 
     protected readonly ITestOutputHelper TestOutputHelper = testOutputHelper;
 
-    protected readonly IServiceProvider ServiceProvider = testCollectionFixture.Factory.Services;
+    protected readonly IServiceProvider ServiceProvider = testAssemblyFixture.Factory.Services;
 
     protected readonly CancellationToken CancellationToken = TestContext.Current.CancellationToken;
 
@@ -62,21 +65,40 @@ public abstract class ServiceTestBase(ServiceTestAssemblyFixture testCollectionF
 
     protected async Task ExecuteHttpClientAsync(Func<HttpClient, Task> func)
     {
-        using var httpClient = this.Factory.CreateClient();
+        var server = testAssemblyFixture.Factory.Server;
+
+        var handler = server.CreateHandler();
+
+        var loggerDelegatingHandler = new HttpLoggerDelegatingHandler(this.TestOutputHelper)
+        {
+            InnerHandler = handler
+        };
+
+        using var httpClient = new HttpClient(loggerDelegatingHandler)
+        {
+            BaseAddress = server.BaseAddress
+        };
+
         await func.Invoke(httpClient);
     }
 
-    protected async Task<T?> ParseResponse<T>(HttpResponseMessage response, bool writeConsole = true)
+    public HttpClient GetCustomHttpClient()
     {
-        var content = await response.Content.ReadAsStringAsync();
-        if (string.IsNullOrWhiteSpace(content)) return default(T);
+        var server = testAssemblyFixture.Factory.Server;
 
-        if (writeConsole)
+        var handler = server.CreateHandler();
+
+        var loggerDelegatingHandler = new HttpLoggerDelegatingHandler(this.TestOutputHelper)
         {
-            this.TestOutputHelper.WriteLine(content);
-        }
+            InnerHandler = handler
+        };
 
-        var jsonSerializerOptions = this.Factory.JsonSerializerSettings;
-        return JsonSerializer.Deserialize<T>(content, jsonSerializerOptions);
+        var httpClient = new HttpClient(loggerDelegatingHandler)
+        {
+            BaseAddress = server.BaseAddress
+        };
+
+        return httpClient;
     }
+
 }

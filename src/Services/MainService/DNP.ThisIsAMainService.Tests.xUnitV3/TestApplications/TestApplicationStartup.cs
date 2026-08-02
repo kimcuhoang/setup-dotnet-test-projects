@@ -1,4 +1,6 @@
-﻿namespace DNP.PeopleService.Tests.xUnitV3.TestApplications;
+﻿using DNP.PeopleService.Tests.xUnitV3.Infrastructure.TestSetup;
+
+namespace DNP.PeopleService.Tests.xUnitV3.TestApplications;
 public class TestApplicationStartup(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper) : ServiceTestBase(testCollectionFixture, testOutputHelper)
 {
     [Fact]

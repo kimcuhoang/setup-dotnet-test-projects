@@ -1,10 +1,12 @@
-﻿using DNP.ThisIsAMainService.Features.Products.Models;
+﻿using DNP.PeopleService.Tests.xUnitV3.Infrastructure.TestSetup;
+using DNP.ThisIsAMainService.Features.Products.Models;
 using NPOI.XSSF.UserModel;
+using System.Net.Http.Json;
 using System.Text;
 
 namespace DNP.PeopleService.Tests.xUnitV3.TestProducts;
-public class TestImportProducts(ServiceTestAssemblyFixture testCollectionFixture, ITestOutputHelper testOutputHelper)
-    : ServiceTestBase(testCollectionFixture, testOutputHelper)
+public class TestImportProducts(ServiceTestAssemblyFixture testAssemblyFixture, ITestOutputHelper testOutputHelper)
+    : ServiceTestBase(testAssemblyFixture, testOutputHelper)
 {
     [Fact]
     public async Task TestImportByCsv()
@@ -18,8 +20,8 @@ public class TestImportProducts(ServiceTestAssemblyFixture testCollectionFixture
         for (int i = 0; i < numberOfProducts; i++)
         {
             sb.AppendLine(string.Join(",", [
-                    Faker.Random.AlphaNumeric(10).ToUpper(),
-                    Faker.Commerce.ProductName()
+                    this.Faker.Random.AlphaNumeric(10).ToUpper(),
+                    this.Faker.Commerce.ProductName()
                 ]));
         }
 
@@ -35,11 +37,12 @@ public class TestImportProducts(ServiceTestAssemblyFixture testCollectionFixture
         // ==================================
         // Step-03: Execute the POST request
         // ==================================
-        var httpClient = Factory.CreateClient();
-        var response = await httpClient.PostAsync("/products/import-csv", formData, CancellationToken);
+
+        using var httpClient = this.GetCustomHttpClient();
+        var response = await httpClient.PostAsync("/products/import-csv", formData, this.CancellationToken);
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var products = await ParseResponse<List<ImportProductModel>>(response);
+        var products = await response.Content.ReadFromJsonAsync<List<ImportProductModel>>(this.CancellationToken);
 
         products.ShouldNotBeEmpty();
         products.Count.ShouldBe(numberOfProducts);
@@ -66,30 +69,30 @@ public class TestImportProducts(ServiceTestAssemblyFixture testCollectionFixture
         for (int i = 1; i <= numberOfProducts; i++)
         {
             var dataRow = sheet.CreateRow(i);
-            dataRow.CreateCell(0).SetCellValue(Faker.Random.AlphaNumeric(10).ToUpper());
-            dataRow.CreateCell(1).SetCellValue(Faker.Commerce.ProductName());
+            dataRow.CreateCell(0).SetCellValue(this.Faker.Random.AlphaNumeric(10).ToUpper());
+            dataRow.CreateCell(1).SetCellValue(this.Faker.Commerce.ProductName());
         }
 
-        var excelStream = new MemoryStream();
+        using var excelStream = new MemoryStream();
         workBook.Write(excelStream, leaveOpen: true);
 
         // ==================================
         // Step-02: Prepare the FormData
         // ==================================
         using var formData = new MultipartFormDataContent();
-        formData.Add(content: new StreamContent(excelStream),
-                    name: "file",
-                    fileName: "abc.excel");
+        formData.Add(content: new StreamContent(excelStream), name: "file", fileName: "abc.excel");
 
 
         // ==================================
         // Step-03: Execute the POST request
         // ==================================
-        var httpClient = Factory.CreateClient();
-        var response = await httpClient.PostAsync("/products/import-excel", formData, CancellationToken);
+
+        using var httpClient = this.GetCustomHttpClient();
+        var response = await httpClient.PostAsync("/products/import-excel", formData, this.CancellationToken);
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var products = await ParseResponse<List<ImportProductModel>>(response);
+        var products = await response.Content.ReadFromJsonAsync<List<ImportProductModel>>(this.CancellationToken);
+
         products.ShouldNotBeEmpty();
         products.Count.ShouldBe(numberOfProducts);
         products.ForEach(p =>

@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http.Json;
+﻿using DNP.PeopleService.Tests.xUnitV3.Infrastructure.HostedServices;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using System.Diagnostics;
 
-namespace DNP.PeopleService.Tests.xUnitV3;
+namespace DNP.PeopleService.Tests.xUnitV3.Infrastructure.TestSetup;
 
 public class ServiceApplicationFactory : WebApplicationFactory<Program>
 {
@@ -28,7 +27,7 @@ public class ServiceApplicationFactory : WebApplicationFactory<Program>
             .UseSetting("Logging:LogLevel:Microsoft.EntityFrameworkCore.Database.Command", "Warning");
 
         builder
-            .ConfigureServices(services =>
+            .ConfigureServices((context, services) =>
             {
                 services.RemoveAll<IHostedService>();
             })
@@ -42,14 +41,5 @@ public class ServiceApplicationFactory : WebApplicationFactory<Program>
     {
         using var scope = this.Services.CreateAsyncScope();
         await func.Invoke(scope.ServiceProvider);
-    }
-
-    public JsonSerializerOptions JsonSerializerSettings
-    {
-        get
-        {
-            var jsonSettings = this.Services.GetRequiredService<IOptions<JsonOptions>>().Value;
-            return jsonSettings?.SerializerOptions ?? new JsonSerializerOptions();
-        }
     }
 }

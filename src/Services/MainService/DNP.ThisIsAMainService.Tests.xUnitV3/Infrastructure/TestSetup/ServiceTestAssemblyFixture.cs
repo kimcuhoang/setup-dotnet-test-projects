@@ -1,4 +1,4 @@
-﻿using DNP.PeopleService.Tests.xUnitV3;
+﻿using DNP.PeopleService.Tests.xUnitV3.Infrastructure.TestSetup;
 using System.Diagnostics;
 using Testcontainers.MsSql;
 using Testcontainers.Xunit;
@@ -6,7 +6,7 @@ using Xunit.Sdk;
 
 [assembly: AssemblyFixture(typeof(ServiceTestAssemblyFixture))]
 
-namespace DNP.PeopleService.Tests.xUnitV3;
+namespace DNP.PeopleService.Tests.xUnitV3.Infrastructure.TestSetup;
 
 public sealed class ServiceTestAssemblyFixture(IMessageSink messageSink) : ContainerFixture<MsSqlBuilder, MsSqlContainer>(messageSink)
 {
@@ -26,6 +26,8 @@ public sealed class ServiceTestAssemblyFixture(IMessageSink messageSink) : Conta
     {
         Debug.WriteLine($"{nameof(ServiceTestAssemblyFixture)} {nameof(InitializeAsync)}");
         await base.InitializeAsync();
+
+
         this.Factory = new ServiceApplicationFactory(this.Container.GetConnectionString());
     }
 
