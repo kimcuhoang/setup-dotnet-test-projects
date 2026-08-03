@@ -63,6 +63,7 @@ public class TestImportCsv(ServiceTestAssemblyFixture testCollectionFixture, ITe
 
             var excelStream = new MemoryStream();
             workBook.Write(excelStream, leaveOpen: true);
+            excelStream.Seek(0, SeekOrigin.Begin);
 
             using var formData = new MultipartFormDataContent();
             formData.Add(content: new StreamContent(excelStream),

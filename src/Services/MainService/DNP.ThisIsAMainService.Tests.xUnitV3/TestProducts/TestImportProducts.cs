@@ -75,6 +75,8 @@ public class TestImportProducts(ServiceTestAssemblyFixture testAssemblyFixture, 
 
         using var excelStream = new MemoryStream();
         workBook.Write(excelStream, leaveOpen: true);
+        // excelStream.Position = 0;
+        excelStream.Seek(0, SeekOrigin.Begin);
 
         // ==================================
         // Step-02: Prepare the FormData
