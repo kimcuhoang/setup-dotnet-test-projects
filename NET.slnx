@@ -1,8 +1,11 @@
 <Solution>
+  <Folder Name="/.github/">
+    <File Path=".github/workflows/dev.yaml" />
+  </Folder>
   <Folder Name="/Services/" />
-  <Folder Name="/Services/People/">
-    <Project Path="./src/Services/PeopleService/DNP.PeopleService/DNP.PeopleService.csproj" />
-    <Project Path="./src/Services/PeopleService/DNP.PeopleService.Tests.xUnitV3/DNP.PeopleService.Tests.xUnitV3.csproj" />
+  <Folder Name="/Services/MainService/">
+    <Project Path="src/Services/MainService/DNP.ThisIsAMainService.Tests.xUnitV3/DNP.ThisIsAMainService.Tests.xUnitV3.csproj" />
+    <Project Path="src/Services/MainService/DNP.ThisIsAMainService/DNP.ThisIsAMainService.csproj" />
   </Folder>
   <Folder Name="/__/">
     <File Path=".gitignore" />
