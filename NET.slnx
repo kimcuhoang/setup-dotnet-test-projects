@@ -4,6 +4,7 @@
   </Folder>
   <Folder Name="/Services/" />
   <Folder Name="/Services/MainService/">
+    <Project Path="src/Services/MainService/DNP.MainService.TestEdgeCases/DNP.MainService.TestEdgeCases.csproj" Id="dcc847eb-484a-4668-96f4-831f23a27e80" />
     <Project Path="src/Services/MainService/DNP.ThisIsAMainService.Tests.xUnitV3/DNP.ThisIsAMainService.Tests.xUnitV3.csproj" />
     <Project Path="src/Services/MainService/DNP.ThisIsAMainService/DNP.ThisIsAMainService.csproj" />
   </Folder>

@@ -1,7 +1,9 @@
 ﻿using DNP.PeopleService.Tests.xUnitV3.Infrastructure.HostedServices;
+using DNP.ThisIsAMainService.Infrastructures.Kestrel;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using System.Diagnostics;
@@ -17,14 +19,28 @@ public class ServiceApplicationFactory : WebApplicationFactory<Program>
         this._connectionString = connectionString;
         Debug.WriteLine($"{nameof(ServiceApplicationFactory)} constructor");
     }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseEnvironment("Integration-Test");
-
         builder
-            .UseSetting("ConnectionStrings:Default", this._connectionString)
             .UseSetting("Logging:LogLevel:Microsoft.EntityFrameworkCore.Database.Command", "Information")
             .UseSetting("Logging:LogLevel:Microsoft.EntityFrameworkCore.Database.Command", "Warning");
+
+        var settings = new List<KeyValuePair<string, string?>>
+        {
+            new("ConnectionStrings:Default", this._connectionString),
+            new($"{nameof(AdvancedKestrelOptions)}:{nameof(AdvancedKestrelOptions.MinRequestBodyBytesPerSecond)}", "100"),
+            new($"{nameof(AdvancedKestrelOptions)}:{nameof(AdvancedKestrelOptions.MinRequestBodyGracePeriodSeconds)}", "1"),
+        };
+
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(settings)
+            .Build();
+
+        builder
+            .UseEnvironment("Integration-Tests")
+            .UseConfiguration(configuration)
+            .ConfigureAppConfiguration(app => app.AddInMemoryCollection(settings));
 
         builder
             .ConfigureServices((context, services) =>

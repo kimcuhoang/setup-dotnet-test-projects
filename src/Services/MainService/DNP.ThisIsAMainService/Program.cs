@@ -1,5 +1,6 @@
 using DNP.ThisIsAMainService.Features.People;
 using DNP.ThisIsAMainService.Infrastructures.HealthChecks;
+using DNP.ThisIsAMainService.Infrastructures.Kestrel;
 using DNP.ThisIsAMainService.Infrastructures.Persistence;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using System.Text.Encodings.Web;
@@ -7,11 +8,15 @@ using System.Text.Unicode;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.ConfigureKestrel();
+
 builder
     .AddPersistence()
     .AddPeopleFeature();
 
 builder.Services
+    .AddHttpLogging()
+    .AddProblemDetails()
     .AddEndpointsApiExplorer()
     .AddControllers()
     .AddJsonOptions(json =>
@@ -22,11 +27,7 @@ builder.Services
     });
 
 builder.Services.AddGrpc();
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.AddServerHeader = false;
-    options.Configure(builder.Configuration.GetSection("Kestrel"));
-});
+
 
 builder.Services
     .AddHealthChecks()
@@ -35,6 +36,8 @@ builder.Services
 var app = builder.Build();
 
 app.MapControllers();
+
+app.UseHttpLogging();
 
 // Configure the HTTP request pipeline.
 app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");

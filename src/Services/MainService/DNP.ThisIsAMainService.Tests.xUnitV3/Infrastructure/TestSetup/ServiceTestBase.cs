@@ -15,6 +15,14 @@ public abstract class ServiceTestBase(ServiceTestAssemblyFixture testAssemblyFix
 
     protected readonly Faker Faker = new();
 
+    protected IServiceProvider ScopeServiceProvider { get; private set; }
+    
+    public virtual async ValueTask InitializeAsync()
+    {
+        var scope = this.ServiceProvider.CreateAsyncScope();
+        this.ScopeServiceProvider = scope.ServiceProvider;
+    }
+
     public virtual async ValueTask DisposeAsync()
     {
         await this.ExecuteDbContextAsync(async dbContext =>
@@ -24,8 +32,6 @@ public abstract class ServiceTestBase(ServiceTestAssemblyFixture testAssemblyFix
                 .ExecuteDeleteAsync(this.CancellationToken);
         });
     }
-
-    public virtual ValueTask InitializeAsync() => ValueTask.CompletedTask;
 
     protected async Task ExecuteTransactionDbContextAsync(Func<DbContext, Task> func)
     {
