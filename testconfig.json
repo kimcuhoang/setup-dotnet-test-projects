@@ -1,0 +1,16 @@
+{
+  "xUnit": {
+    "methodDisplay": "method",
+    "stopOnFail": true
+  },
+  "codeCoverage": {
+    "Configuration": {
+      "CodeCoverage": {
+        "AllowOverwrite": true,
+        "ModulePaths": {
+          "Exclude": [ ".Tests\\.dll$", "Shared.*\\.dll$" ]
+        }
+      }
+    }
+  }
+}

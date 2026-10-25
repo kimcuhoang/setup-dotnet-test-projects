@@ -12,7 +12,7 @@
 ### Configure `dotnet-tool` in local
 - Install dotnet's tools, i.e. `dotnet-ef` in local
     ```bash
-    just dotnet-tools
+    just install-dotnet-tools
     ```
     
 ### Configure **Kestrel**
