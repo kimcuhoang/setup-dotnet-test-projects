@@ -4,8 +4,9 @@
   </Folder>
   <Folder Name="/Services/" />
   <Folder Name="/Services/MainService/">
-    <Project Path="src/Services/MainService/DNP.ThisIsAMainService.Tests.xUnitV3/DNP.ThisIsAMainService.Tests.xUnitV3.csproj" />
     <Project Path="src/Services/MainService/DNP.ThisIsAMainService/DNP.ThisIsAMainService.csproj" />
+    <Project Path="src/Services/MainService/DNP.ThisIsAMainService.Tests.xUnitV3/DNP.ThisIsAMainService.Tests.xUnitV3.csproj" />
+    <Project Path="src/Services/MainService/DNP.ThisIsAMainServices.TestsV1/DNP.ThisIsAMainServices.TestsV1.csproj" />
   </Folder>
   <Folder Name="/__/">
     <File Path=".gitignore" />

@@ -5,11 +5,25 @@ default:
 	clear
 	just --list
 
-dotnet-tools command:
+install-dotnet-tools:
 	clear
 	dotnet new tool-manifest --force
-	dotnet tool {{command}} --local dotnet-outdated-tool
-	dotnet tool {{command}} --local dotnet-ef
+	dotnet tool install --local dotnet-outdated-tool
+	dotnet tool install --local dotnet-ef
+
+update-dotnet-tools:
+	clear
+	dotnet tool update --all
+
+check-deprecated:
+    dotnet list package --deprecated --include-transitive
+
+check-vulnerable:
+    dotnet list package --vulnerable --include-transitive
+
+latest-nuget-packages:
+	clear
+	dotnet outdated -u
 
 add-migration name:
 	clear
@@ -48,11 +62,11 @@ build:
 
 test: build
 	clear
-	dotnet test src/Services/MainService/DNP.ThisIsAMainService.Tests.xUnitV3 --no-build --verbosity normal
+	dotnet test src/Services/MainService/DNP.ThisIsAMainServices.TestsV1 --no-build --verbosity normal
 
 ms-test: build
 	clear
-	dotnet run --project src/Services/MainService/DNP.ThisIsAMainService.Tests.xUnitV3 --no-build --no-restore --verbosity normal
+	dotnet run --project src/Services/MainService/DNP.ThisIsAMainServices.TestsV1 --no-build --no-restore --verbosity normal
 
 start: migration-bundle migration-run
 	clear
