@@ -31,4 +31,4 @@ jobs:
       run: dotnet build --no-restore
 
     - name: Test by Testing.Platform .NET 10 & xUnit.v3 for MsSQL
-      run: dotnet run --no-build --verbosity quiet --project src/Services/MainService/DNP.ThisIsAMainServices.TestsV1
+      run: dotnet run --no-build --verbosity quiet --project src/Services/MainService/DNP.ThisIsAMainServices.Tests

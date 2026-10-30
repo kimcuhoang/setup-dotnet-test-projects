@@ -1,22 +1,16 @@
-﻿using CsvHelper.Configuration;
+﻿using CsvHelper;
 using Ganss.Excel;
 
 namespace DNP.ThisIsAMainService.Features.Products.Models;
 
-public class ImportProductModel
+[CsvRecord]
+public partial class ImportProductModel
 {
     [Column("Product Code")]
+    [CsvColumn("Product Code")]
     public string Code { get; set; }
 
     [Column("Product Name")]
+    [CsvColumn("Product Name")]
     public string Name { get; set; }
-}
-
-public class ClassMapImportProductModel : ClassMap<ImportProductModel>
-{
-    public ClassMapImportProductModel()
-    {
-        Map(m => m.Code).Name("Product Code");
-        Map(m => m.Name).Name("Product Name");
-    }
 }

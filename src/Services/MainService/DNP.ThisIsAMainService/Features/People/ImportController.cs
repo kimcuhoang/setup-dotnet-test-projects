@@ -1,14 +1,14 @@
 ﻿using CsvHelper;
 using Ganss.Excel;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 
 namespace DNP.ThisIsAMainService.Features.People;
 
 [ApiController]
-public class ImportController : ControllerBase
+public partial class ImportController : ControllerBase
 {
-    public class PersonCode
+    [CsvRecord]
+    public partial class PersonCode
     {
         [Column(1)]
         public string Code { get; set; }
@@ -19,8 +19,7 @@ public class ImportController : ControllerBase
     public IActionResult DoImportCsv([FromForm] IFormFile file)
     {
         using var stream = file.OpenReadStream();
-        using var reader = new StreamReader(stream);
-        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+        using var csv = CsvReader.Create(stream, new CsvReaderOptions { Separator = ',' });
         var records = csv.GetRecords<PersonCode>().ToList();
         return Ok(records);
     }

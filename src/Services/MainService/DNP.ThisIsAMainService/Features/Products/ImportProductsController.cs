@@ -2,7 +2,6 @@
 using DNP.ThisIsAMainService.Features.Products.Models;
 using Ganss.Excel;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 
 namespace DNP.ThisIsAMainService.Features.Products;
 
@@ -15,9 +14,7 @@ public class ImportProductsController : ControllerBase
     public IActionResult DoImportCsv(IFormFile file)
     {
         using var stream = file.OpenReadStream();
-        using var reader = new StreamReader(stream);
-        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-        csv.Context.RegisterClassMap<ClassMapImportProductModel>();
+        using var csv = CsvReader.Create(stream, new CsvReaderOptions { Separator = ',', MissingField = CsvMissingFieldHandling.Throw });
         var records = csv.GetRecords<ImportProductModel>().ToList();
         return Ok(records);
     }
