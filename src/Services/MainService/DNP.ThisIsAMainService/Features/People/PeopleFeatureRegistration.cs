@@ -1,12 +1,29 @@
-﻿using DNP.ThisIsAMainService.Features.People.Domain;
+using DNP.ThisIsAMainService.Features.People.Create;
 
 namespace DNP.ThisIsAMainService.Features.People;
 
-internal static class PeopleFeatureRegistration
+public static class PeopleFeatureRegistration
 {
-    public static WebApplicationBuilder AddPeopleFeature(this WebApplicationBuilder builder)
+    extension(WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<IPersonRepository, PersonRepository>();
-        return builder;
+        public WebApplicationBuilder AddPeopleFeature()
+        {
+            builder.Services
+                .AddTransient<CreatePeopleCommandHandler>();
+
+            return builder;
+        }
+    }
+
+    extension(WebApplication app)
+    {
+        public WebApplication MapPeopleEndpoints()
+        {
+            var group = app.MapGroup("/people");
+
+            group.AddCreatePersonEndpoint();
+
+            return app;
+        }
     }
 }

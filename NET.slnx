@@ -5,7 +5,7 @@
   <Folder Name="/Services/" />
   <Folder Name="/Services/MainService/">
     <Project Path="src/Services/MainService/DNP.ThisIsAMainService/DNP.ThisIsAMainService.csproj" />
-    <Project Path="src/Services/MainService/DNP.ThisIsAMainServices.Tests/DNP.ThisIsAMainServices.Tests.csproj" />
+    <Project Path="src/Services/MainService/DNP.ThisIsAMainService.Tests/DNP.ThisIsAMainService.Test.csproj" />
   </Folder>
   <Folder Name="/__/">
     <File Path=".gitignore" />
