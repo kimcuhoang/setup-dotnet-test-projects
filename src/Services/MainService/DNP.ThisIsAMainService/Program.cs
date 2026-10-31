@@ -1,38 +1,65 @@
-using DNP.ThisIsAMainService.Features.People;
-using DNP.ThisIsAMainService.Infrastructures.HealthChecks;
-using DNP.ThisIsAMainService.Infrastructures.Persistence;
+using DNP.ThisIsAMainService.Shared.Infrastructures.HealthChecks;
+using DNP.ThisIsAMainService.Shared.Infrastructures.Persistence;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using System.Diagnostics;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder
-    .AddPersistence()
-    .AddPeopleFeature();
-
-builder.Services
-    .AddEndpointsApiExplorer()
-    .AddControllers()
-    .AddJsonOptions(json =>
-    {
-        json.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
-        json.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-        json.JsonSerializerOptions.AllowTrailingCommas = true;
-    });
-
-builder.Services.AddGrpc();
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.AddServerHeader = false;
     options.Configure(builder.Configuration.GetSection("Kestrel"));
 });
 
+builder.AddPersistence();
+
+builder.Services
+    .AddEndpointsApiExplorer()
+    .AddHttpLogging(options =>
+    {
+        options.CombineLogs = true;
+        options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.All;
+    })
+    .AddProblemDetails(options =>
+    {
+        options.CustomizeProblemDetails = context =>
+        {
+            context.ProblemDetails.Extensions.TryAdd("requestId", context.HttpContext.TraceIdentifier);
+            context.ProblemDetails.Extensions.TryAdd("traceId", Activity.Current?.Id ?? context.HttpContext.TraceIdentifier);
+        };
+    })
+    .ConfigureHttpJsonOptions(options =>
+    {
+        options.SerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+        options.SerializerOptions.PropertyNameCaseInsensitive = true;
+        options.SerializerOptions.AllowTrailingCommas = true;
+        // Ignore object cycles (prevent infinite reference loops)
+        options.SerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    });
+
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(json =>
+    {
+        json.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+        json.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+        json.JsonSerializerOptions.AllowTrailingCommas = true;
+        // Ignore object cycles (prevent infinite reference loops)
+        json.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    });
+
+builder.Services.AddGrpc();
+
 builder.Services
     .AddHealthChecks()
     .AddCustomHealthChecks();
 
+
 var app = builder.Build();
+
+app.UseExceptionHandler().UseHttpLogging();
 
 app.MapControllers();
 

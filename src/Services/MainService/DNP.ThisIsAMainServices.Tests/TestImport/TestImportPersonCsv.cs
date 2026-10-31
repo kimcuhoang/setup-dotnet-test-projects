@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Text;
+using DNP.ThisIsAMainService.Features.People.Import;
 using NPOI.XSSF.UserModel;
-using static DNP.ThisIsAMainService.Features.People.ImportController;
 
 namespace DNP.ThisIsAMainServices.Tests.TestImport;
 
@@ -29,7 +29,7 @@ public class TestImportPersonCsv(TestCollectionFixture collectionFixture, ITestO
         var response = await httpClient.PostAsync("/import-csv", formData, this.CancellationToken);
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var codes = await response.Content.ReadFromJsonAsync<List<PersonCode>>(this.CancellationToken);
+        var codes = await response.Content.ReadFromJsonAsync<List<ImportPersonModel>>(this.CancellationToken);
         codes.ShouldNotBeEmpty();
         codes.Count.ShouldBe(numberOfCodes);
 
@@ -69,7 +69,7 @@ public class TestImportPersonCsv(TestCollectionFixture collectionFixture, ITestO
         var response = await httpClient.PostAsync("/import-excel", formData, this.CancellationToken);
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var codes = await response.Content.ReadFromJsonAsync<List<PersonCode>>(this.CancellationToken);
+        var codes = await response.Content.ReadFromJsonAsync<List<ImportPersonModel>>(this.CancellationToken);
         codes.ShouldNotBeEmpty();
         codes.Count.ShouldBe(numberOfCodes);
 

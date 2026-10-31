@@ -1,19 +1,16 @@
-﻿using DNP.ThisIsAMainService.Infrastructures.Persistence;
+﻿using DNP.ThisIsAMainService.Shared.Domain;
 
-namespace DNP.ThisIsAMainService.Features.People.Domain;
+namespace DNP.ThisIsAMainService.Shared.Infrastructures.Persistence.Repositories;
 
 public interface IPersonRepository
 {
     Task Add(Person person, CancellationToken cancellationToken = default);
 }
 
-public class PersonRepository : IPersonRepository
+public class PersonRepository(PeopleDbContext dbContext) : IPersonRepository
 {
-    private readonly PeopleDbContext _dbContext;
-    public PersonRepository(PeopleDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly PeopleDbContext _dbContext = dbContext;
+
     public async Task Add(Person person, CancellationToken cancellationToken = default)
     {
         var existingPerson = await this._dbContext.People.FindAsync([person.Id], cancellationToken);

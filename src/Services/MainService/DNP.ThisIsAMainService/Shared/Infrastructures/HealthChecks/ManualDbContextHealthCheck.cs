@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace DNP.ThisIsAMainService.Infrastructures.HealthChecks;
+namespace DNP.ThisIsAMainService.Shared.Infrastructures.HealthChecks;
 
 public class ManualDbContextHealthCheck(DbContext dbContext) : IHealthCheck
 {

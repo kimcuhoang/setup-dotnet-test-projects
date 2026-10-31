@@ -32,32 +32,36 @@ clean-untrack:
 add-migration name:
 	clear
 	dotnet ef migrations add {{name}} \
-		-p src/Services/MainService/DNP.ThisIsAMainService -s src/Services/MainService/DNP.ThisIsAMainService \
-		-c PeopleDbContext -o Infrastructures/Persistence/Migrations
+		-p src/Services/MainService/DNP.ThisIsAMainService \
+		-s src/Services/MainService/DNP.ThisIsAMainService \
+		-c PeopleDbContext \
+		-o Shared/Infrastructures/Persistence/Migrations
 
 remove-migration:
 	clear
 	dotnet ef migrations remove \
-	-p src/Services/MainService/DNP.ThisIsAMainService -s src/Services/MainService/DNP.ThisIsAMainService \
-	-c PeopleDbContext
+		-p src/Services/MainService/DNP.ThisIsAMainService \
+		-s src/Services/MainService/DNP.ThisIsAMainService \
+		-c PeopleDbContext
 
 revert-migration name:
 	clear
 	dotnet ef database update {{name}} \
-	-p src/Services/MainService/DNP.ThisIsAMainService -s src/Services/MainService/DNP.ThisIsAMainService \
-	-c PeopleDbContext
+		-p src/Services/MainService/DNP.ThisIsAMainService \
+		-s src/Services/MainService/DNP.ThisIsAMainService \
+		-c PeopleDbContext
 
 migration-bundle:
 	clear
 	dotnet ef migrations bundle \
-	-p src/Services/MainService/DNP.ThisIsAMainService -s src/Services/MainService/DNP.ThisIsAMainService \
-	-c PeopleDbContext \
-	-o deploy/efbundle.exe --force
+		-p src/Services/MainService/DNP.ThisIsAMainService \
+		-s src/Services/MainService/DNP.ThisIsAMainService \
+		-c PeopleDbContext \
+		-o deploy/efbundle.exe --force
 
 migration-run:
 	clear
 	deploy/efbundle.exe --verbose --connection "Data Source=localhost,1433;Initial Catalog=People-Service;User ID=sa;Password=P@ssword;TrustServerCertificate=true;"
-
 
 build:
 	clear

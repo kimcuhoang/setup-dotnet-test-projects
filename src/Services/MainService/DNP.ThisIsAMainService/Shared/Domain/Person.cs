@@ -1,4 +1,4 @@
-﻿namespace DNP.ThisIsAMainService.Features.People.Domain;
+﻿namespace DNP.ThisIsAMainService.Shared.Domain;
 
 public class Person
 {

@@ -1,4 +1,4 @@
-﻿using DNP.ThisIsAMainService.Features.Products.Models;
+﻿using DNP.ThisIsAMainService.Features.Products.Import;
 using NPOI.XSSF.UserModel;
 using System.Net.Http.Json;
 using System.Text;
@@ -81,7 +81,8 @@ public class TestImportProducts(TestCollectionFixture collectionFixture, ITestOu
 
         using var httpClient = this.WebApplicationFactory.CreateClient();
 
-        await Should.ThrowAsync<Exception>(() => httpClient.PostAsync("/products/import-csv", formData, this.CancellationToken));
+        var response = await httpClient.PostAsync("/products/import-csv", formData, this.CancellationToken);
+        response.StatusCode.ShouldBe(HttpStatusCode.InternalServerError);
     }
 
     [Fact]

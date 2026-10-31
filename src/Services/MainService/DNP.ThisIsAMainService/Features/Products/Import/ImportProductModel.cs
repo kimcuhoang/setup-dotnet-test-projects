@@ -1,7 +1,7 @@
 ﻿using CsvHelper;
 using Ganss.Excel;
 
-namespace DNP.ThisIsAMainService.Features.Products.Models;
+namespace DNP.ThisIsAMainService.Features.Products.Import;
 
 [CsvRecord]
 public partial class ImportProductModel

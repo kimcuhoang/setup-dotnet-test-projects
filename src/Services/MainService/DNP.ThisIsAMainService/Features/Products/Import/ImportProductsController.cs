@@ -1,9 +1,8 @@
 ﻿using CsvHelper;
-using DNP.ThisIsAMainService.Features.Products.Models;
 using Ganss.Excel;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DNP.ThisIsAMainService.Features.Products;
+namespace DNP.ThisIsAMainService.Features.Products.Import;
 
 [ApiController]
 public class ImportProductsController : ControllerBase

@@ -1,6 +1,7 @@
+using DNP.ThisIsAMainService.Shared.Infrastructures.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace DNP.ThisIsAMainService.Infrastructures.Persistence;
+namespace DNP.ThisIsAMainService.Shared.Infrastructures.Persistence;
 
 internal static class PersistenceRegistration
 {
@@ -29,6 +30,8 @@ internal static class PersistenceRegistration
                 peopleDbContext.SeedingData();
             });
         });
+
+        builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 
         return builder;
     }
