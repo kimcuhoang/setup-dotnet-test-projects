@@ -1,3 +1,5 @@
+using DNP.ThisIsAMainService.Features.People;
+using DNP.ThisIsAMainService.Shared.Infrastructures.ExceptionHandlers;
 using DNP.ThisIsAMainService.Shared.Infrastructures.HealthChecks;
 using DNP.ThisIsAMainService.Shared.Infrastructures.Persistence;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -30,6 +32,7 @@ builder.Services
             context.ProblemDetails.Extensions.TryAdd("traceId", Activity.Current?.Id ?? context.HttpContext.TraceIdentifier);
         };
     })
+    .AddExceptionHandler<DefaultExceptionHandler>()
     .ConfigureHttpJsonOptions(options =>
     {
         options.SerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
@@ -56,6 +59,8 @@ builder.Services
     .AddHealthChecks()
     .AddCustomHealthChecks();
 
+builder.AddPeopleFeature();
+
 
 var app = builder.Build();
 
@@ -70,6 +75,9 @@ app.MapHealthChecks("/healthz", new HealthCheckOptions
 {
     ResponseWriter = HealthCheckRegistration.WriteResponse,
 });
+
+
+app.MapPeopleEndpoints();
 
 await app.RunAsync();
 

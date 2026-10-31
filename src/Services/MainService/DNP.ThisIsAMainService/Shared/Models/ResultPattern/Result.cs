@@ -41,7 +41,7 @@ public sealed class Result<T> : Result
         Value = value;
     }
 
-    public IResult ToTypedResults(Func<T?, IResult> onSuccess)
+    public IResult ToTypedResult(Func<T?, IResult> onSuccess)
     {
         if (this.IsSuccess)
         {
