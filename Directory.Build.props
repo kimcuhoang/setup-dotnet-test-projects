@@ -1,11 +1,25 @@
 <Project>
   <!-- See https://aka.ms/dotnet/msbuild/customize for more details on customizing your build -->
 	<PropertyGroup>
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<NoWarn>CS8618</NoWarn>
-		
+		<NoWarn>CS8618;xUnit1041</NoWarn>
 		<AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
 	</PropertyGroup>
+
+	<ItemGroup Condition="$(MSBuildProjectName.EndsWith('.TestsV1'))">
+		<None Include="$(MSBuildThisFileDirectory)testconfig.json">
+			<Link>testconfig.json</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<PropertyGroup>
+		<TestResultsDir>$(SolutionDir)TestResults</TestResultsDir>
+	</PropertyGroup>
+
+	<Target Name="CleanTestResults" BeforeTargets="BeforeBuild">
+		<RemoveDir Directories="$(TestResultsDir)" ContinueOnError="WarnAndContinue" Condition="Exists('$(TestResultsDir)')"/>
+	</Target>
 </Project>
