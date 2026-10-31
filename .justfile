@@ -70,11 +70,11 @@ build:
 
 test: build
 	clear
-	dotnet test src/Services/MainService/DNP.ThisIsAMainServices.Tests --no-build --verbosity normal
+	dotnet test src/Services/MainService/DNP.ThisIsAMainService.Tests --no-build --verbosity normal
 
 ms-test: build
 	clear
-	dotnet run --project src/Services/MainService/DNP.ThisIsAMainServices.Tests --no-build --no-restore --verbosity normal
+	dotnet run --project src/Services/MainService/DNP.ThisIsAMainService.Tests --no-build --no-restore --verbosity normal
 
 start: migration-bundle migration-run
 	clear
