@@ -1,54 +1,44 @@
-# Playing with .NET
+# ASP.NET Core Web API integration tests
 
-## Features
+A practical example of testing an ASP.NET Core Web API with xUnit v3 and Testcontainers.
 
-### Using [justfile](/.justfile) as a command runner
-- [just](https://github.com/casey/just)
-- [Justfile Cheat Sheet](https://cheatography.com/linux-china/cheat-sheets/justfile/)
-- Installation
-    - **Linux**: `curl -sSL instl.sh/casey/just/linux | bash`
-    - **Windows**: `winget install --id Casey.Just --exact`
+This project uses [Microsoft Testing Platform](https://learn.microsoft.com/dotnet/core/testing/microsoft-testing-platform-intro), a lightweight platform for running and managing .NET tests.
 
-### Configure `dotnet-tool` in local
-- Install dotnet's tools, i.e. `dotnet-ef` in local
-    ```bash
-    just dotnet-tools
-    ```
-    
-### Configure **Kestrel**
-- Via `appsettings.json`
-- Then load via `Program.cs`
-    ```csharp
-    builder.WebHost.ConfigureKestrel(options =>
-    {
-        options.AddServerHeader = false;
-        options.Configure(builder.Configuration.GetSection("Kestrel"));
-    });
-    ```
-### EntityFrameworkCore
-- Use [bundle migration](https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/applying?tabs=dotnet-core-cli#bundles)
-- And [Data Seeding](https://learn.microsoft.com/en-us/ef/core/modeling/data-seeding)
+## Test setup
 
-### Setup an integration test project
-- Using [xUnitV3](https://xunit.net/docs/getting-started/v3/whats-new)
-- Using [Testcontainers.XunitV3](https://dotnet.testcontainers.org/test_frameworks/xunit_net/)
-- Using [Testcontainers.MsSql](https://dotnet.testcontainers.org/modules/mssql/)
-- Using [Microsoft Testing Platform support in xUnit.net v3](https://xunit.net/docs/getting-started/v3/microsoft-testing-platform)
-- Highlighted:
-    - `AssemblyFixture` as a [Shared Context between Tests](https://xunit.net/docs/shared-context) in which the database and application are created only once for all tests, which improves performance and reduces resource usage.
-    - [Memory Configuration Provider](https://learn.microsoft.com/en-us/dotnet/core/extensions/configuration-providers#memory-configuration-provider) to dynamically change the settings for integration tests without modifying existing code
-    - By using `WebApplicationFactory`, we can create a test server that runs the application in memory, which allows us to test the application without having to deploy it to a real server.
+```text
+Test classes without explicit collections
+                 |
+                 v
+     AutoBucketCollectionFactory
+          /              \
+         v                v
+ Dynamic collection  Dynamic collection
+         \                /
+          v              v
+        TestCollectionFixture
+        (one per collection)
+                 |
+                 v
+       ASP.NET Core test server
+                 ^
+                 | connection string
+       TestAssemblyFixture
+                 |
+                 v
+      SQL Server Testcontainer
+       (started once per assembly)
+```
 
-- Run tests via `just`
-    ```bash
-    just ms-test
-    ```
-    Or
-    ```bash
-    just test
-    ```
+- `TestAssemblyFixture` starts a SQL Server container once for the test assembly.
+- `TestCollectionFixture` creates the test application and configures it with the container's connection string.
+- `AutoBucketCollectionFactory` distributes test classes without an explicit collection across dynamic collections, helping tests run in parallel.
+- Tests run against the application and its SQL Server database.
 
----
-## Give a Star! :star2:
+## Run tests
 
-If you liked this project or if it helped you, please give a star :star2: for this repository. Thank you!!!
+```bash
+dotnet test NET.slnx
+```
+
+Docker must be running so Testcontainers can start SQL Server.
