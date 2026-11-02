@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace DNP.ThisIsAMainService.Shared.Infrastructures.Persistence.Migrations
+namespace DNP.ThisIsAMainService.Infrastructures.EntityFramework.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialPeople : Migration
+    public partial class InitPeople : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

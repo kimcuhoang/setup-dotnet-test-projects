@@ -1,4 +1,4 @@
-using DNP.ThisIsAMainService.Shared.Models.ResultPattern;
+using DNP.ThisIsAMainService.Common.ResultPattern;
 
 namespace DNP.ThisIsAMainService.Features.People.Create;
 
@@ -12,7 +12,7 @@ public class CreatePeopleCommand(CreatePersonPayload payload)
 
 internal class CreatePeopleCommandHandler()
 {
-    public async Task<Result> Handler(CreatePeopleCommand command, CancellationToken cancellationToken = default)
+    public async Task<Result> Handle(CreatePeopleCommand command, CancellationToken cancellationToken = default)
     {
         var payload = command.Payload;
 

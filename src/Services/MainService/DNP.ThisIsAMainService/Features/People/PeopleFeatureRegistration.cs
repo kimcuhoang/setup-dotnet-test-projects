@@ -8,9 +8,7 @@ public static class PeopleFeatureRegistration
     {
         public WebApplicationBuilder AddPeopleFeature()
         {
-            builder.Services
-                .AddTransient<CreatePeopleCommandHandler>();
-
+            builder.Services.AddTransient<CreatePeopleCommandHandler>();
             return builder;
         }
     }

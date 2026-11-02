@@ -1,4 +1,4 @@
-namespace DNP.ThisIsAMainService.Shared.Models.ResultPattern;
+namespace DNP.ThisIsAMainService.Common.ResultPattern;
 
 public enum ReasonType
 {

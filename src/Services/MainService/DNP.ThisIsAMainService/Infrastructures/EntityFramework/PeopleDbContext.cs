@@ -1,8 +1,8 @@
-﻿using DNP.ThisIsAMainService.Shared.Domain;
+﻿using DNP.ThisIsAMainService.Domain.People;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace DNP.ThisIsAMainService.Shared.Infrastructures.Persistence;
+namespace DNP.ThisIsAMainService.Infrastructures.EntityFramework;
 
 public class PeopleDbContext(DbContextOptions options) : DbContext(options)
 {

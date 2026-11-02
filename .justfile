@@ -35,7 +35,7 @@ add-migration name:
 		-p src/Services/MainService/DNP.ThisIsAMainService \
 		-s src/Services/MainService/DNP.ThisIsAMainService \
 		-c PeopleDbContext \
-		-o Shared/Infrastructures/Persistence/Migrations
+		-o Infrastructures/EntityFramework/Migrations
 
 remove-migration:
 	clear
@@ -70,13 +70,16 @@ build:
 
 test: build
 	clear
-	dotnet test src/Services/MainService/DNP.ThisIsAMainService.Tests --no-build --verbosity normal
+	dotnet test src/Services/MainService/DNP.ThisIsAMainService.Tests --no-build --no-restore --verbosity normal
 
 ms-test: build
 	clear
-	dotnet run --project src/Services/MainService/DNP.ThisIsAMainService.Tests --no-build --no-restore --verbosity normal
+	dotnet run \
+		--project src/Services/MainService/DNP.ThisIsAMainService.Tests \
+		--no-build --no-restore --verbosity normal
 
 start: migration-bundle migration-run
 	clear
-	dotnet watch --project src/Services/MainService/DNP.ThisIsAMainService \
+	dotnet watch \
+		--project src/Services/MainService/DNP.ThisIsAMainService \
 		--no-build --no-launch-profile --no-restore --verbosity normal 

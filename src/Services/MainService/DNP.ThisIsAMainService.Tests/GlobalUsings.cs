@@ -5,7 +5,7 @@ global using Shouldly;
 global using System.Net;
 global using System.Text.Json;
 global using Xunit.v3;
-global using PersonDomain = DNP.ThisIsAMainService.Shared.Domain.Person;
+global using PersonDomain = DNP.ThisIsAMainService.Domain.People.Person;
 global using DNP.ThisIsAMainService.Tests.Setup;
 
 

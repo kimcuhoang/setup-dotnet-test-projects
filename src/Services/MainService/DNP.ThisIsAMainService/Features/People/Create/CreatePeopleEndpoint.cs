@@ -13,11 +13,12 @@ public static class CreatePeopleEndpoint
         {
             builder.MapPost(Route, async(
                 [FromBody] CreatePersonPayload payload,
+                [FromServices] CreatePeopleCommandHandler handler,
                 CancellationToken cancellationToken = default
             ) =>
             {
                 var command = new CreatePeopleCommand(payload);
-                var result = await new CreatePeopleCommandHandler().Handler(command, cancellationToken);
+                var result = await handler.Handle(command, cancellationToken);
                 return result.ToTypedResult(() => TypedResults.Created());
             })
             .Produces(StatusCodes.Status201Created)

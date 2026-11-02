@@ -1,11 +1,6 @@
-﻿using DNP.ThisIsAMainService.Shared.Domain;
+﻿using DNP.ThisIsAMainService.Domain.People;
 
-namespace DNP.ThisIsAMainService.Shared.Infrastructures.Persistence.Repositories;
-
-public interface IPersonRepository
-{
-    Task Add(Person person, CancellationToken cancellationToken = default);
-}
+namespace DNP.ThisIsAMainService.Infrastructures.EntityFramework.Repositories;
 
 public class PersonRepository(PeopleDbContext dbContext) : IPersonRepository
 {

@@ -2,7 +2,7 @@ using System.Net.Http.Json;
 using DNP.ThisIsAMainService.Features.People.Create;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DNP.ThisIsAMainService.Tests.TestPersons;
+namespace DNP.ThisIsAMainService.Tests.TestPeople;
 
 public class TestCreatePersonViaApi(TestCollectionFixture collectionFixture, ITestOutputHelper testOutputHelper) : TestClassBase(collectionFixture, testOutputHelper)
 {

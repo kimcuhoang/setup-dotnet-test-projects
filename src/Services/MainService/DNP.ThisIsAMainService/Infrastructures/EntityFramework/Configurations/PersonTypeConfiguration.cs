@@ -1,8 +1,8 @@
-﻿using DNP.ThisIsAMainService.Shared.Domain;
+﻿using DNP.ThisIsAMainService.Domain.People;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DNP.ThisIsAMainService.Shared.Infrastructures.Persistence.Configurations;
+namespace DNP.ThisIsAMainService.Infrastructures.EntityFramework.Configurations;
 
 public class PersonTypeConfiguration : IEntityTypeConfiguration<Person>
 {

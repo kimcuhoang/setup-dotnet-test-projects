@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace DNP.ThisIsAMainService.Shared.Infrastructures.ExceptionHandlers;
+namespace DNP.ThisIsAMainService.Infrastructures.ExceptionHandlers;
 
 public class DefaultExceptionHandler(ILogger<DefaultExceptionHandler> logger) : IExceptionHandler
 {

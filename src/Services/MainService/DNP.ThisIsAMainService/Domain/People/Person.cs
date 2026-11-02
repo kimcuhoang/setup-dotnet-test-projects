@@ -1,8 +1,9 @@
-﻿namespace DNP.ThisIsAMainService.Shared.Domain;
+﻿using DNP.ThisIsAMainService.Common.Primitives;
 
-public class Person
+namespace DNP.ThisIsAMainService.Domain.People;
+
+public class Person : Entity
 {
-    public Guid Id { get; set; }
     public string Name { get; set; }
 
     public static Person Default => new()

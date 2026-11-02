@@ -1,7 +1,7 @@
 using DNP.ThisIsAMainService.Features.People;
-using DNP.ThisIsAMainService.Shared.Infrastructures.ExceptionHandlers;
-using DNP.ThisIsAMainService.Shared.Infrastructures.HealthChecks;
-using DNP.ThisIsAMainService.Shared.Infrastructures.Persistence;
+using DNP.ThisIsAMainService.Infrastructures.EntityFramework;
+using DNP.ThisIsAMainService.Infrastructures.ExceptionHandlers;
+using DNP.ThisIsAMainService.Infrastructures.HealthChecks;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using System.Diagnostics;
 using System.Text.Encodings.Web;

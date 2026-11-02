@@ -1,4 +1,4 @@
-namespace DNP.ThisIsAMainService.Tests.TestPersons;
+namespace DNP.ThisIsAMainService.Tests.TestPeople;
 
 public class TestCreatePerson(TestCollectionFixture collectionFixture, ITestOutputHelper testOutputHelper) : TestClassBase(collectionFixture, testOutputHelper)
 {
