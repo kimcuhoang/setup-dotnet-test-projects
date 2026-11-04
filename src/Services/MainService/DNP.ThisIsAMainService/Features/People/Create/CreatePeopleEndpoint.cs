@@ -5,7 +5,7 @@ namespace DNP.ThisIsAMainService.Features.People.Create;
 
 public static class CreatePeopleEndpoint
 {
-    public static string Route = @"/";
+    public static readonly string Route = @"/";
 
     extension(RouteGroupBuilder builder)
     {

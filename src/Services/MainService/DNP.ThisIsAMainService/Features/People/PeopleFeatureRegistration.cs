@@ -1,4 +1,5 @@
 using DNP.ThisIsAMainService.Features.People.Create;
+using DNP.ThisIsAMainService.Features.People.ImportMinimal;
 
 namespace DNP.ThisIsAMainService.Features.People;
 
@@ -8,7 +9,9 @@ public static class PeopleFeatureRegistration
     {
         public WebApplicationBuilder AddPeopleFeature()
         {
-            builder.Services.AddTransient<CreatePeopleCommandHandler>();
+            builder.Services
+                .AddTransient<CreatePeopleCommandHandler>()
+                .AddTransient<ImportMinimalHandler>();
             return builder;
         }
     }
@@ -19,7 +22,9 @@ public static class PeopleFeatureRegistration
         {
             var group = app.MapGroup("/people");
 
-            group.AddCreatePersonEndpoint();
+            group
+            .AddCreatePersonEndpoint()
+            .AddImportMinimalEndpoint();
 
             return app;
         }
